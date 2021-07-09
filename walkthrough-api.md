@@ -39,13 +39,13 @@ ele precisa confirmar, faturar e entregar.
 
 Todas os recursos da API são expostas pelo domínio api.magalu.com. A
 documentação e ferramentas para desenvolvedores, inclusive gerenciamento de
-tokens de acesso, residem em `https://dev.magalu.com/` -- para se cadastrar basta
+tokens de acesso, residem em https://dev.magalu.com/ -- para se cadastrar basta
 ter uma conta Github. Esperamos você lá!
 
 # Autenticação e Autorização
 
 A forma mais simples de acessar a API Magalu é usando um API Key,
-que pode ser gerada em `https://dev.magalu.com/user`. Neste documento, onde
+que pode ser gerada em https://dev.magalu.com/user. Neste documento, onde
 aparecer `MYAPIKEY` deve ser feita a substituição pela chave gerada.
 
 > Observação: este documento contém exemplos que assumem que você tenha as
@@ -312,7 +312,7 @@ Utilizando o tenant certo, você está pronto para explorar outras partes da API
 
 Se você não trabalha para um Vendedor habilitado na plataforma Magalu (o
 que talvez seja o caso para boa parte dos desenvolvedores do Brasil :-),
-existe um tenant especial com o type stenagam.SELLER que permite explorar
+existe um tenant especial com o type `stenagam.SELLER` que permite explorar
 dados da perspectiva de seller. Pense em "stenagam" como um universo paralelo,
 onde todas as transações e dados gravados não gerem consequências concretas
 (como pagamentos e entregas de mercadoria) no mundo real.
@@ -325,17 +325,17 @@ por esta perspectiva, antes de testar mudanças com dados de produção.
 
 Ah, faltou falar uma coisa :-) O processo de desenvolvimento da API Magalu é
 aberto, e convidamos todos os desenvolvedores interessados a participar do
-nosso Slack — basta se registrar em `https://dev.magalu.com/teaser-form` que
+nosso Slack — basta se registrar em https://dev.magalu.com/teaser-form que
 entramos em contato com um convite.
 
 Caso tenham alguma problema ou sugestão durante o uso do portal ou das APIs,
-podem abrir um bug) em `https://github.com/luizalabs/dev.magalu.com/issues`. E
+podem abrir um bug) em https://github.com/luizalabs/dev.magalu.com/issues. E
 podem usar feedback@dev.magalu.com para enviar seus comentários e pedidos
 especiais.
 
 Obrigado! Esperamos que tenha ficado tudo claro o suficiente para você começar
 a explorar a funcionalidade da API, lembrando que o ponto de partida é o portal
-em `https://dev.magalu.com/` -- nos vemos lá!
+em https://dev.magalu.com/ -- nos vemos lá!
 
 # Changelog
 
