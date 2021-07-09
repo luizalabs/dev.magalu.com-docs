@@ -1,11 +1,13 @@
 Walkthrough API Marketplace Magalu
-==================================           __
+==================================
+                                             __
                                             / /
      ___  ___  __     __ _  ___  ___  ___  / /_ __    _______  __ _
     / _ `/ _ \/ /    /  ' \/ _ `/ _ `/ _ `/ / // /   / __/ _ \/  ' \
     \_,_/ ___/_/ () /_/_/_/\_,_/\_, /\_,_/_/\_,_/ () \__/\___/_/_/_/
        / /                      /  /
        ``                       ```
+
 # Introdução
 
 A API do Marketplace da Magalu oferece acesso programático a uma variedade de
@@ -54,7 +56,7 @@ aparecer `MYAPIKEY` deve ser feita a substituição pela chave gerada.
 Para testar se sua API Key está funcionando, use o seguinte endpoint:
 
   $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami
-  { 
+  {
      "uuid": "5b02cdaf-9a93-4cfe-959a-ec989bd414e5",
      "preferred_email": "joe@corp.example.edu",
      "first name": "Joe",
@@ -90,7 +92,7 @@ foram as últimas compras que você fez no Magalu e no Netshoes:
 
   $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/maestro/v1/orders | \
       jq ".[] | {uuid, id, created_at, channel: .sales_channel.organization.id}"
-  [ 
+  [
       {
         "uuid": "2c14b2ad-4a7f-4e6c-a0a0-90d89e9cc34a",
         "id": "8954600874660585",
@@ -126,11 +128,11 @@ o Vendedor (o dono do estoque) do produto:
                   "id": "magazine_luiza",
                   "description": "Magazine Luiza"
               }
-          },       
+          },
           "customer": {
               "uuid": "5b02cdaf-9a93-4cfe-959a-ec989bd414e5",
               "name": "Joe User",
-          }, 
+          },
           "payment":{
               "status": {
                  "id": "paid"
@@ -330,7 +332,7 @@ entramos em contato com um convite.
 Caso tenham alguma problema ou sugestão durante o uso do portal ou das APIs,
 podem abrir um bug) em `https://github.com/luizalabs/dev.magalu.com/issues`. E
 podem usar feedback@dev.magalu.com para enviar seus comentários e pedidos
-especiais. 
+especiais.
 
 Obrigado! Esperamos que tenha ficado tudo claro o suficiente para você começar
 a explorar a funcionalidade da API, lembrando que o ponto de partida é o portal
