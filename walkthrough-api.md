@@ -14,18 +14,18 @@ A API do Marketplace da Magalu oferece acesso programático a uma variedade de
 funcionalidades, expostas como endpoints REST, acessíveis via HTTPS. Com esta
 API você pode:
 
-    - Escrever aplicações que utilizam todos os recursos da API, agindo em nome
-      de um usuário final, como por exemplo, um parceiro Magalu vendendo
-      produtos no marketplace
+- Escrever aplicações que utilizam todos os recursos da API, agindo em nome de
+  um usuário final, como por exemplo, um parceiro Magalu vendendo produtos no
+  marketplace
 
-    - Consultar seus pedidos de venda, aceitá-los e realizar os passos
-      essenciais para sua operação, incluindo faturamento e envio
+- Consultar seus pedidos de venda, aceitá-los e realizar os passos essenciais
+  para sua operação, incluindo faturamento e envio
 
-    - Atender e responder a chamados abertos sobre suas vendas e os produtos
-      vendidos
+- Atender e responder a chamados abertos sobre suas vendas e os produtos
+  vendidos
 
-    - Consultar e cadastrar SKUs do seu estoque, utilizando como base produtos
-      do nosso catálogo central
+- Consultar e cadastrar SKUs do seu estoque, utilizando como base produtos do
+  nosso catálogo central
 
 entre outras atividades no ecossistema Magalu.
 
@@ -55,35 +55,34 @@ aparecer `MYAPIKEY` deve ser feita a substituição pela chave gerada.
 
 Para testar se sua API Key está funcionando, use o seguinte endpoint:
 
-  $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami
-  {
-     "uuid": "5b02cdaf-9a93-4cfe-959a-ec989bd414e5",
-     "preferred_email": "joe@corp.example.edu",
-     "first name": "Joe",
-     "last name": "User",
-     "active_tenant.id": "6e7563e8-e167-4bd6-b431-f4cfd82cb12e",
-     "active_tenant.type": "maganets.CUSTOMER",
-     "updated_at": "2021-02-14T01:14:25.000Z",
-     "created_at": "2020-12-22T16:08:51.000Z",
-  }
+    $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami
+    {
+         "uuid": "5b02cdaf-9a93-4cfe-959a-ec989bd414e5",
+         "preferred_email": "joe@corp.example.edu",
+         "first name": "Joe",
+         "last name": "User",
+         "active_tenant.id": "6e7563e8-e167-4bd6-b431-f4cfd82cb12e",
+         "active_tenant.type": "maganets.CUSTOMER",
+         "updated_at": "2021-02-14T01:14:25.000Z",
+         "created_at": "2020-12-22T16:08:51.000Z",
+    }
 
 Embora API Keys sejam simples de usar e não expirem, acessos com API Key têm
 algumas restrições:
 
-    - Acessos a dados de produção podem ser feitos apenas pela perspectiva do
-      Consumidor associado ao usuário dono da API Key (ou seja, não é possível
-      usar API Keys para acessar dados de produção pela perspectiva de
-      Vendedor)
+- Acessos a dados de produção podem ser feitos apenas pela perspectiva do
+  Consumidor associado ao usuário dono da API Key (ou seja, não é possível usar
+  API Keys para acessar dados de produção pela perspectiva de Vendedor)
 
-    - Acessos a dados "rascunho" (às vezes chamado de sandbox), utilizado para
-      testes, podem ser feitos com API Keys assumindo qualquer perspectiva.
+- Acessos a dados "rascunho" (às vezes chamado de sandbox), utilizado para
+  testes, podem ser feitos com API Keys assumindo qualquer perspectiva.
 
 Para acesso completo ao ambiente de produção API Magalu, você deve utilizar o
 fluxo de autorização padrão OAuth 2.0. Chamadas OAuth 2.0 usam um token de
 acesso no cabeçalho Authorization, como abaixo:
 
-  $ curl -H "Authorization: Bearer AT" https://api.magalu.com/account/v1/whoami
-  [...]
+    $ curl -H "Authorization: Bearer AT" https://api.magalu.com/account/v1/whoami
+    [...]
 
 # Consultando pedidos e pacotes
 
