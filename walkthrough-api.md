@@ -79,9 +79,9 @@ algumas restrições:
 
 Para acesso completo ao ambiente de produção API Magalu, você deve utilizar o
 fluxo de autorização padrão OAuth 2.0. Chamadas OAuth 2.0 usam um token de
-acesso no cabeçalho Authorization, como abaixo:
+acesso no cabeçalho Authorization, conforme indicado abaixo:
 
-    $ curl -H "Authorization: Bearer AT" https://api.magalu.com/account/v1/whoami
+    $ curl -H "Authorization: Bearer MYTOKEN" https://api.magalu.com/account/v1/whoami
     [...]
 
 # Consultando pedidos e pacotes
