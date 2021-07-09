@@ -89,22 +89,22 @@ acesso no cabeçalho Authorization, como abaixo:
 Com sua API Key em mãos, você pode já consultar a API e descobrir quais
 foram as últimas compras que você fez no Magalu e no Netshoes:
 
-  $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/maestro/v1/orders | \
-      jq ".[] | {uuid, id, created_at, channel: .sales_channel.organization.id}"
-  [
-      {
-        "uuid": "2c14b2ad-4a7f-4e6c-a0a0-90d89e9cc34a",
-        "id": "8954600874660585",
-        "created_at": "2021-02-14T01:14:25.000Z",
-        "channel": "magazine_luiza"
-      },
-      {
-        "uuid": "fc4d3912-9ec6-4e55-8855-207385a37fd9",
-        "id": "8954600882145512",
-        "created_at": "2020-12-22T16:08:51.000Z",
-        "channel": "netshoes"
-      }
-  ]
+    $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/maestro/v1/orders | \
+        jq ".[] | {uuid, id, created_at, channel: .sales_channel.organization.id}"
+    [
+        {
+          "uuid": "2c14b2ad-4a7f-4e6c-a0a0-90d89e9cc34a",
+          "id": "8954600874660585",
+          "created_at": "2021-02-14T01:14:25.000Z",
+          "channel": "magazine_luiza"
+        },
+        {
+          "uuid": "fc4d3912-9ec6-4e55-8855-207385a37fd9",
+          "id": "8954600882145512",
+          "created_at": "2020-12-22T16:08:51.000Z",
+          "channel": "netshoes"
+        }
+    ]
 
 Se a consulta não retornou nenhum elemento, tem uma forma fácil de resolver:
 faça uma compra no Magalu ou no Netshoes e faça novamente a chamada. :-)
