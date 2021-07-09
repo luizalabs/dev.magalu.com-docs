@@ -360,7 +360,7 @@ Utilizando o tenant certo, você está pronto para explorar outras partes da API
       }
     ]
 
-Vale ressaltar que o único tenant que não permitimos com o uso de API Keys é o `maganets.SELLER` :-)
+Vale ressaltar que os únicos tenant que não permitimos com o uso de API Keys são os com `type` = `maganets.SELLER` :-)
 
 # Testando com dados de "rascunho": o universo "stenagam"
 
