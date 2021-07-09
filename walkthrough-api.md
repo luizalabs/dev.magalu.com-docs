@@ -113,157 +113,157 @@ A entidade que registra uma compra e seus produtos, Order, possui um ou
 mais pacotes, representando a forma como a compra é dividida conforme o local e
 o Vendedor (o dono do estoque) do produto:
 
-  $ curl -H "X-API-Key: MYAPIKEY" \
-    https://api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
-  [
-      {
-          "uuid": "6779584e-6d49-4489-9652-97d7f68799f5",
-          "id": "8954650874610585",
-          "sales_channel": {
-              "id": 04,
-              "description": "ML-APP Android",
-              "organization": {
-                  "uuid": "4da25f48-4193-45de-b4ed-9b8c93b7f987",
-                  "id": "magazine_luiza",
-                  "description": "Magazine Luiza"
-              }
-          },
-          "customer": {
-              "uuid": "5b02cdaf-9a93-4cfe-959a-ec989bd414e5",
-              "name": "Joe User",
-          },
-          "payment":{
-              "status": {
-                 "id": "paid"
-              },
-          },
-          "created_at": "2020-12-22T16:08:51.000Z",
-          "updated_at": "2020-12-22T16:08:51.000Z",
-          "packages":[
-              {
-                  "uuid": "a6dce737-fe37-4444-8c51-a021d10051b7",
-                  "seller": {
-                      "id": "seller-abcd",
-                      "description": "Seller ABCD"
-                  },
-                  "amount": 151.01,
-                  "created_at": "2020-12-22T16:08:51.000Z",
-                  "updated_at": "2020-12-24T14:52:44.000Z"
-              },
-              {
-                  "uuid": "72653741-4b3a-4327-9f13-03e4ffd2cb31",
-                  "seller": {
-                      "id": "magazineluiza",
-                      "description": "Magazine Luiza"
-                  },
-                  "amount": 505.45,
-                  "created_at": "2020-12-22T16:08:51.000Z",
-                  "updated_at": "2020-12-24T14:52:44.000Z"
-              }
-          ]
-      }
-  ]
+    $ curl -H "X-API-Key: MYAPIKEY" \
+      https://api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+    [
+        {
+            "uuid": "6779584e-6d49-4489-9652-97d7f68799f5",
+            "id": "8954650874610585",
+            "sales_channel": {
+                "id": 04,
+                "description": "ML-APP Android",
+                "organization": {
+                    "uuid": "4da25f48-4193-45de-b4ed-9b8c93b7f987",
+                    "id": "magazine_luiza",
+                    "description": "Magazine Luiza"
+                }
+            },
+            "customer": {
+                "uuid": "5b02cdaf-9a93-4cfe-959a-ec989bd414e5",
+                "name": "Joe User",
+            },
+            "payment":{
+                "status": {
+                   "id": "paid"
+                },
+            },
+            "created_at": "2020-12-22T16:08:51.000Z",
+            "updated_at": "2020-12-22T16:08:51.000Z",
+            "packages":[
+                {
+                    "uuid": "a6dce737-fe37-4444-8c51-a021d10051b7",
+                    "seller": {
+                        "id": "seller-abcd",
+                        "description": "Seller ABCD"
+                    },
+                    "amount": 151.01,
+                    "created_at": "2020-12-22T16:08:51.000Z",
+                    "updated_at": "2020-12-24T14:52:44.000Z"
+                },
+                {
+                    "uuid": "72653741-4b3a-4327-9f13-03e4ffd2cb31",
+                    "seller": {
+                        "id": "magazineluiza",
+                        "description": "Magazine Luiza"
+                    },
+                    "amount": 505.45,
+                    "created_at": "2020-12-22T16:08:51.000Z",
+                    "updated_at": "2020-12-24T14:52:44.000Z"
+                }
+            ]
+        }
+    ]
 
 Para ver os itens de um pacote, consulte o endpoint /packages passando o UUID
 relevante:
 
-  $ curl -H "X-API-Key: MYAPIKEY" \
-    https://api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f/packages/72653741-4b3a-4327-9f13-03e4ffd2cb31
+    $ curl -H "X-API-Key: MYAPIKEY" \
+      https://api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f/packages/72653741-4b3a-4327-9f13-03e4ffd2cb31
 
-  {
-      "uuid": "72653741-4b3a-4327-9f13-03e4ffd2cb31",
-      "seller": {
-          "id": "magazineluiza",
-          "description": "Magazine Luiza"
-      },
-      "amount": 505.45,
-      "items":[
-          {
-              "uuid": "a7697479-4896-4a05-b439-f4ff9913f03b",
-              "product": {
-                  "id": "225339000",
-                  "seller": {
-                      "sku": "225339000"
-                  },
-                  "price": 240.13,
-                  "freight": 22.50,
-                  "discount": 55.60,
-                  "interest": 10,
-                  "value": 194.53,
-                  "total": 217.03,
-                  "description": "KIT 4 Cerveja Heineken Premium Puro Malte Lager",
-                  "reference": "12 Unidades 350ml",
-                  "brand": "Heineken",
-                  "category": {
-                      "id": "ME",
-                      "subCategory": {
-                          "id": "CVEJ"
-                      }
-                  },
-                  "imageUrl": "https://a-static.mlcdn.com.br/{w}x{h}/cerveja-heineken-premium-puro-malte-lager-12-unidades-350ml/magazineluiza/225339000/b04fa5652e7755a44c0117e2124c6e1f.jpg"
-              },
-              "quantity": 2,
-              "value": 389.06,
-              "total": 434.07,
-              "created_at": "2020-12-22T16:08:51.000Z",
-              "updated_at": "2020-12-22T16:08:54.000Z",
-              "gifts": [
-                  {
-                      "uuid": "acd27d3b-9d33-453b-abe9-48e76078a73e",
-                      "id": "218743100",
-                      "description": "Copo Cerveja",
-                      "reference": "vidro",
-                      "brand": "Plastic",
-                      "quantity": 2,
-                      "created_at": "2018-06-08T18:21:35.000Z",
-                      "updated_at": "2018-06-08T18:21:35.000Z"
-                  }
-              ],
-              "bundles": [
-                  {
-                      "uuid": "2bace316-9b49-46d1-a87a-34cc0b12610e",
-                      "id": "218743100",
-                      "description": "Cerveja Heineken Premiu",
-                     "quantity": 4,
-                      "price": 60.03,
-                      "discount": 13.90,
-                      "freight": 5.62,
-                      "interest": 2.5,
-                      "value": 48.63,
-                      "total": 54.25,
-                      "created_at": "2018-06-08T18:21:35.000Z",
-                      "updated_at": "2018-06-08T18:21:35.000Z"
-                  }
-              ],
-              "services": [
-                  {
-                      "uuid": "b34d71ec-b432-4b4c-83ff-c7c5297f179c",
-                      "id": "3",
-                      "description": "Garantia Extendida",
-                      "price": 35.69,
-                      "quantity": 2,
-                      "total": 71.38,
-                      "validity": {
-                          "type": "month",
-                          "value": 12
-                      },
-                      "slug": "GE",
-                      "created_at": "2018-06-08T18:21:35.000Z",
-                      "updated_at": "2018-06-08T18:21:35.000Z"
-                  }
-              ],
-              "benefits": [
+    {
+        "uuid": "72653741-4b3a-4327-9f13-03e4ffd2cb31",
+        "seller": {
+            "id": "magazineluiza",
+            "description": "Magazine Luiza"
+        },
+        "amount": 505.45,
+        "items":[
+            {
+                "uuid": "a7697479-4896-4a05-b439-f4ff9913f03b",
+                "product": {
+                    "id": "225339000",
+                    "seller": {
+                        "sku": "225339000"
+                    },
+                    "price": 240.13,
+                    "freight": 22.50,
+                    "discount": 55.60,
+                    "interest": 10,
+                    "value": 194.53,
+                    "total": 217.03,
+                    "description": "KIT 4 Cerveja Heineken Premium Puro Malte Lager",
+                    "reference": "12 Unidades 350ml",
+                    "brand": "Heineken",
+                    "category": {
+                        "id": "ME",
+                        "subCategory": {
+                            "id": "CVEJ"
+                        }
+                    },
+                    "imageUrl": "https://a-static.mlcdn.com.br/{w}x{h}/cerveja-heineken-premium-puro-malte-lager-12-unidades-350ml/magazineluiza/225339000/b04fa5652e7755a44c0117e2124c6e1f.jpg"
+                },
+                "quantity": 2,
+                "value": 389.06,
+                "total": 434.07,
+                "created_at": "2020-12-22T16:08:51.000Z",
+                "updated_at": "2020-12-22T16:08:54.000Z",
+                "gifts": [
                     {
-                        "type": "cashback",
-                        "description": "10% em Cashback",
-                        "amount": 19.99
+                        "uuid": "acd27d3b-9d33-453b-abe9-48e76078a73e",
+                        "id": "218743100",
+                        "description": "Copo Cerveja",
+                        "reference": "vidro",
+                        "brand": "Plastic",
+                        "quantity": 2,
+                        "created_at": "2018-06-08T18:21:35.000Z",
+                        "updated_at": "2018-06-08T18:21:35.000Z"
                     }
-              ]
-          }
-      ],
-      "created_at": "2020-12-22T16:08:51.000Z",
-      "updated_at": "2020-12-24T14:52:44.000Z"
-  }
+                ],
+                "bundles": [
+                    {
+                        "uuid": "2bace316-9b49-46d1-a87a-34cc0b12610e",
+                        "id": "218743100",
+                        "description": "Cerveja Heineken Premiu",
+                       "quantity": 4,
+                        "price": 60.03,
+                        "discount": 13.90,
+                        "freight": 5.62,
+                        "interest": 2.5,
+                        "value": 48.63,
+                        "total": 54.25,
+                        "created_at": "2018-06-08T18:21:35.000Z",
+                        "updated_at": "2018-06-08T18:21:35.000Z"
+                    }
+                ],
+                "services": [
+                    {
+                        "uuid": "b34d71ec-b432-4b4c-83ff-c7c5297f179c",
+                        "id": "3",
+                        "description": "Garantia Extendida",
+                        "price": 35.69,
+                        "quantity": 2,
+                        "total": 71.38,
+                        "validity": {
+                            "type": "month",
+                            "value": 12
+                        },
+                        "slug": "GE",
+                        "created_at": "2018-06-08T18:21:35.000Z",
+                        "updated_at": "2018-06-08T18:21:35.000Z"
+                    }
+                ],
+                "benefits": [
+                      {
+                          "type": "cashback",
+                          "description": "10% em Cashback",
+                          "amount": 19.99
+                      }
+                ]
+            }
+        ],
+        "created_at": "2020-12-22T16:08:51.000Z",
+        "updated_at": "2020-12-24T14:52:44.000Z"
+    }
 
 # Tenants e Perspectivas
 
@@ -278,33 +278,33 @@ Type"). Tenants podem ter um apelido ("nickname") e um identificador
 
 Para visualizar quais tenants você tem acesso:
 
-  $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami/tenants
-  [
-      {
-          "uuid": "c2715319-e56d-4594-8299-6b2c9ba6d51a",
-          "type": "maganets.CUSTOMER",
-          "created_at": "2020-12-22T16:08:51.000Z",
-          "updated_at": "2020-12-24T14:52:44.000Z"
-      },
-      {
-          "uuid": "0c5d9da2-0efb-4a03-956a-344006817630",
-          "type": "maganets.CUSTOMER"
-          "created_at": "2020-12-22T16:08:51.000Z",
-          "updated_at": "2020-12-24T14:52:44.000Z"
-      },
-      {
-          "uuid": "50407c1c-0f43-49e9-9649-717ce2c53fd6",
-          "type": "maganets.SELLER"
-          "created_at": "2020-12-22T16:08:51.000Z",
-          "updated_at": "2020-12-24T14:52:44.000Z"
-      },
-      {
-          "uuid": "d2e23e35-763a-442a-938b-6544084a630b",
-          "type": "stenagam.SELLER",
-          "created_at": "2020-12-22T16:08:51.000Z",
-          "updated_at": "2020-12-24T14:52:44.000Z"
-      }
-  ]
+    $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami/tenants
+    [
+        {
+            "uuid": "c2715319-e56d-4594-8299-6b2c9ba6d51a",
+            "type": "maganets.CUSTOMER",
+            "created_at": "2020-12-22T16:08:51.000Z",
+            "updated_at": "2020-12-24T14:52:44.000Z"
+        },
+        {
+            "uuid": "0c5d9da2-0efb-4a03-956a-344006817630",
+            "type": "maganets.CUSTOMER"
+            "created_at": "2020-12-22T16:08:51.000Z",
+            "updated_at": "2020-12-24T14:52:44.000Z"
+        },
+        {
+            "uuid": "50407c1c-0f43-49e9-9649-717ce2c53fd6",
+            "type": "maganets.SELLER"
+            "created_at": "2020-12-22T16:08:51.000Z",
+            "updated_at": "2020-12-24T14:52:44.000Z"
+        },
+        {
+            "uuid": "d2e23e35-763a-442a-938b-6544084a630b",
+            "type": "stenagam.SELLER",
+            "created_at": "2020-12-22T16:08:51.000Z",
+            "updated_at": "2020-12-24T14:52:44.000Z"
+        }
+    ]
 
 Utilizando o tenant certo, você está pronto para explorar outras partes da API.
 
