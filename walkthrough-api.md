@@ -299,10 +299,16 @@ Para visualizar quais tenants você tem acesso:
             "updated_at": "2020-12-24T14:52:44.000Z"
         },
         {
-            "uuid": "d2e23e35-763a-442a-938b-6544084a630b",
+            "uuid": "21fea73c-e244-497a-8540-be0d3c583596",
             "type": "stenagam.SELLER",
-            "created_at": "2020-12-22T16:08:51.000Z",
-            "updated_at": "2020-12-24T14:52:44.000Z"
+            "created_at": "2021-07-08T20:48:54.42094604Z",
+            "updated_at": "2021-07-08T20:48:54.420946164Z"
+        },
+        {
+            "uuid": "000055d5-ca8c-4cd5-bc38-ca5fa0f8e23a",
+            "type": "stenagam.CUSTOMER",
+            "created_at": "2021-07-08T20:48:54.420945556Z",
+            "updated_at": "2021-07-08T20:48:54.420945893Z"
         }
     ]
 
