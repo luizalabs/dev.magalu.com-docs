@@ -7,6 +7,9 @@ Walkthrough API Marketplace Magalu
     \_,_/ ___/_/ () /_/_/_/\_,_/\_, /\_,_/_/\_,_/ () \__/\___/_/_/_/
        / /                      /  /
        ``                       ```
+## Disclaimer
+
+Atualmente a API do Marketplace da Magalu encontra-se em estado beta, com acesso restrito a alguns convidados que manifestaram interesse durante a chamada de interessados no TDC Connections, que ocorreu em Junho deste ano. A abertura da API publicamente acontecerá ainda este ano, e será amplamente divulgada.
 
 # Introdução
 
