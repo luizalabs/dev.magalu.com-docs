@@ -90,7 +90,7 @@ Com sua API Key em mãos, você pode já consultar a API e descobrir quais
 foram as últimas compras que você fez no Magalu e no Netshoes:
 
     $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/maestro/v1/orders | \
-        jq ".[] | {uuid, id, created_at, channel: .sales_channel.organization.id}"
+        jq ".[] | {uuid, id, created_at, channel: .sales_channel.organization.code}"
     [
         {
           "uuid": "2c14b2ad-4a7f-4e6c-a0a0-90d89e9cc34a",
