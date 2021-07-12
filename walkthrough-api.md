@@ -11,7 +11,7 @@ Walkthrough API Marketplace Magalu
 
 Atualmente a API do Marketplace da Magalu encontra-se em estado beta, com acesso restrito a alguns convidados que manifestaram interesse durante a chamada de interessados no TDC Connections, que ocorreu em Junho deste ano. A abertura da API publicamente acontecerá ainda este ano, e será amplamente divulgada.
 
-Para este momento, considere que as URLs referenciadas como https://dev.magalu.com/ dizem respeito ao que encontra-se, hoje, em https://alpha.dev.magalu.com/.
+Para este momento, considere que as URLs referenciadas no texto possuem, atualmente, um prefixo alpha. Dessa forma, https://dev.magalu.com/ referencia https://alpha.dev.magalu.com/ e https://api.magalu.com/ referencia https://alpha.api.magalu.com/.
 
 # Introdução
 
