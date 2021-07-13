@@ -122,7 +122,7 @@ o Vendedor (o dono do estoque) do produto:
                 "description": "ML-APP Android",
                 "organization": {
                     "uuid": "4da25f48-4193-45de-b4ed-9b8c93b7f987",
-                    "id": "magazine_luiza",
+                    "code": "magazine_luiza",
                     "description": "Magazine Luiza"
                 }
             },
@@ -198,7 +198,7 @@ relevante:
                             "id": "CVEJ"
                         }
                     },
-                    "imageUrl": "https://a-static.mlcdn.com.br/{w}x{h}/cerveja-heineken-premium-puro-malte-lager-12-unidades-350ml/magazineluiza/225339000/b04fa5652e7755a44c0117e2124c6e1f.jpg"
+                    "image_url": "https://a-static.mlcdn.com.br/{w}x{h}/cerveja-heineken-premium-puro-malte-lager-12-unidades-350ml/magazineluiza/225339000/b04fa5652e7755a44c0117e2124c6e1f.jpg"
                 },
                 "quantity": 2,
                 "value": 389.06,
