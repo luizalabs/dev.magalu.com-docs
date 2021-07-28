@@ -86,11 +86,11 @@ Com esses parâmetros em mão, o `state` pode ser utilizado para implementação
 Com o valor de `code` em mãos, recebido no passo 3, é possível fazer uma requisição no nosso XXXX e obter um `Access Token`  (JWT) do usuário que autorizou a aplicação. A requisição pode ser feita da seguinte forma:
 
 ```curl
-curl -X POST "${BASE_URL_TOKEN}"
-	--data-urlencode "grant_type=authorization_code"
-	--data-urlencode "client_id=$CLIENT_ID"
-	--data-urlencode "client_secret=$CLIENT_SECRET"
-	--data-urlencode "code=$CODE"
+curl -X POST "${BASE_URL_TOKEN}" \
+	--data-urlencode "grant_type=authorization_code" \
+	--data-urlencode "client_id=$CLIENT_ID" \
+	--data-urlencode "client_secret=$CLIENT_SECRET" \
+	--data-urlencode "code=$CODE" \
 	--data-urlencode "scope=$SCOPE"
 ```
 
@@ -168,10 +168,10 @@ Tendo esse Access Token em mãos, a aplicação pode consultar os tenants do usu
 É válido ressaltar, ainda, que o `Refresh Token` pode ser utilizado para renovar o `Access Token` do usuário na mesma sessão, e isso pode ser feito através da seguinte requisição:
 
 ```curl
-curl -X POST "${BASE_URL_TOKEN}"
-	--data-urlencode "grant_type=refresh_token"
-	--data-urlencode "client_id=$CLIENT_ID"
-	--data-urlencode "client_secret=$CLIENT_SECRET"
+curl -X POST "${BASE_URL_TOKEN}" \
+	--data-urlencode "grant_type=refresh_token" \
+	--data-urlencode "client_id=$CLIENT_ID" \
+	--data-urlencode "client_secret=$CLIENT_SECRET" \
 	--data-urlencode "refresh_token=$REFRESH_TOKEN"
 ```
 
