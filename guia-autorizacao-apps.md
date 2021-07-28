@@ -85,7 +85,7 @@ Com esses parâmetros em mão, o `state` pode ser utilizado para implementação
 
 Com o valor de `code` em mãos, recebido no passo 3, é possível fazer uma requisição no nosso XXXX e obter um `Access Token`  (JWT) do usuário que autorizou a aplicação. A requisição pode ser feita da seguinte forma:
 
-```
+```curl
 curl -X POST "${BASE_URL_TOKEN}"
 	--data-urlencode "grant_type=authorization_code"
 	--data-urlencode "client_id=$CLIENT_ID"
@@ -95,7 +95,7 @@ curl -X POST "${BASE_URL_TOKEN}"
 ```
 
 Onde:
--  `$CLIENT_ID` deve ser o client ID da sua aplicação;
+- `$CLIENT_ID` deve ser o client ID da sua aplicação;
 	- No nosso exemplo, seria `minha-aplicacao`.
 - `$CLIENT_SECRET` deve ser a secret da sua aplicação;
 	- Ela pode ser consultada no DevPortal, e é um valor secreto que não deve ser compartilhado em hipótese alguma.
@@ -103,7 +103,7 @@ Onde:
 	- No nosso exemplo seria `6ccdb1f7-eb3d-49f0-894e-90b64dd6ead0.94c44902-0d37-41b2-b6f1-45808ce8eb2f.1e39527d-02aa-4fa0-97c9-fe6ce98fb93e`.
 - `$SCOPE` como citado anteriormente, não precisa ser alterado no momento e pode ser omitido.
 
-### Access Token obtido
+### Tokens obtidos
 
 Após a requisição de troca de `code` por `Access Token`, é esperada uma resposta como essa
 
@@ -162,4 +162,23 @@ Caso a aplicação não peça nenhum `scope` adicional, o que é esperado por ho
 ```
 
 Tendo esse Access Token em mãos, a aplicação pode consultar os tenants do usuário no `Account` e então fazer as requisições na nossa API. :-)
+
+### Renovação de Access Token
+
+É válido ressaltar, ainda, que o `Refresh Token` pode ser utilizado para renovar o `Access Token` do usuário na mesma sessão, e isso pode ser feito através da seguinte requisição:
+
+```curl
+curl -X POST "${BASE_URL_TOKEN}"
+	--data-urlencode "grant_type=refresh_token"
+	--data-urlencode "client_id=$CLIENT_ID"
+	--data-urlencode "client_secret=$CLIENT_SECRET"
+	--data-urlencode "refresh_token=$REFRESH_TOKEN"
+```
+
+Onde:
+- `$CLIENT_ID` deve ser o client ID da sua aplicação;
+- `$CLIENT_SECRET` deve ser a secret da sua aplicação;
+- `$REFREH_TOKEN` deve ser o Refresh Token obtido no fluxo de obtenção de tokens.
+
+Além disso, a resposta para essa requisição será a mesma da retornada na troca de um `code` por um `Access Token`.
 
