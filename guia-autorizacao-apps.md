@@ -1,4 +1,4 @@
-# Guia de autenticação e autorização
+# Guia de autorização de aplicações
 
 
 ## Introdução
