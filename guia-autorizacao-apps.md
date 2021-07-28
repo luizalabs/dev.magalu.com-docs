@@ -63,7 +63,7 @@ Onde `response_type`= `code`, `client_id` = `minha-aplicacao`, `redirect_uri` = 
 
 Após o usuário ser redirecionado para a nossa URL de autenticação, ele cairá em uma tela como essa:
 
-IMAGEM_LOGIN=~/ll/src/guia/login.png
+![Imagem do fluxo de login no IDP](./imgs/login.png "Fluxo de login no IDP")
 
 Que permitirá que ele faça login como vendedor ou consumidor. É esperado que o usuário, nesse momento, preencha os seus dados e faça o login, e então inicia-se o passo 3.
 P.S.: caso o usuário já tenha autorizado a aplicação e esses dados ainda estejam guardados no navegador, esse passo é pulado e o passo 3 inicia-se logo após o redirecionamento do passo 1.
