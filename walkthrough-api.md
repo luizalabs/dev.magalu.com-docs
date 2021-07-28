@@ -341,57 +341,56 @@ $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami/tenants
 
 Utilizando o tenant certo, você está pronto para explorar outras partes da API. Para alterar a perspectiva (o "tenant") utilizada nas requisições feitas na API, basta adicionar o header `"X-Tenant-ID: MYTENANTID"`, onde `MYTENANTID` é um dos uuids obtidos no passo anterior. Por exemplo:
 
-    $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: d2e23e35-763a-442a-938b-6544084a630b" https://api.magalu.com/maestro/v1/orders?_limit=1
+    $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" https://api.magalu.com/maestro/v1/orders?_limit=1
     [
-      {
-        "id": "efb77dcf-d83c-4935-81ac-7be5f37e6cdc",
-        "number": "9014500879663847",
-        "sales_channel": {
-          "code": 53,
-          "description": "ML-APP Android",
-          "organization": {
-            "id": "4da25f48-4193-45de-b4ed-9b8c93b7f987",
-            "code": "magazine_luiza",
-            "description": "Magazine Luiza"
-          }
-        },
-        "customer": {
-          "id": "001dc28a-fe4d-482c-a0ef-6c6cdc46f94a",
-          "name": "Sofist Nome da Pessoa",
-          "cpf": "47708744210"
-        },
-        "payment": {
-          "status": {
-            "code": "processing"
-          },
-          "currency": "BRL"
-        },
-        "packages": [
-          {
-            "id": "e3ae3598-8034-4374-8eed-bdca8c31d5a0",
-            "seller": {
-              "code": "stenagam_sandbox",
-              "description": "Stenagam Sandbox"
-            },
-            "amount": 198.99,
-            "created_at": "2021-01-06T07:26:38.000Z",
-            "updated_at": "2021-07-02T12:59:58.000Z"
-          },
-          {
-            "id": "b90a950b-c95e-4b4c-be25-0eff5c764500",
-            "seller": {
-              "code": "stenagam_sandbox",
-              "description": "Stenagam Sandbox"
-            },
-            "amount": 20.7,
-            "created_at": "2021-01-06T07:26:38.000Z",
-            "updated_at": "2021-07-02T12:59:58.000Z"
-          }
-        ],
-        "created_at": "2021-01-06T07:26:38.000Z",
-        "updated_at": "2021-01-06T07:54:30.000+0000"
-      }
-    ]
+	  {
+	    "uuid": "efb77dcf-d83c-4935-81ac-7be5f37e6cdc",
+	    "number": "9014500879663847",
+	    "sales_channel": {
+	      "code": 53,
+	      "description": "ML-APP Android",
+	      "organization": {
+	        "uuid": "4da25f48-4193-45de-b4ed-9b8c93b7f987",
+	        "code": "magazine_luiza",
+	        "description": "Magazine Luiza"
+	      }
+	    },
+	    "customer": {
+	      "uuid": "001dc28a-fe4d-482c-a0ef-6c6cdc46f94a",
+	      "name": "Sofist Nome da Pessoa"
+	    },
+	    "payment": {
+	      "status": {
+	        "code": "processing"
+	      },
+	      "currency": "BRL"
+	    },
+	    "packages": [
+	      {
+	        "uuid": "e3ae3598-8034-4374-8eed-bdca8c31d5a0",
+	        "seller": {
+	          "code": "stenagam_sandbox",
+	          "description": "Stenagam Sandbox"
+	        },
+	        "amount": 198.99,
+	        "created_at": "2021-01-06T07:26:38.000Z",
+	        "updated_at": "2021-07-02T12:59:58.000Z"
+	      },
+	      {
+	        "uuid": "b90a950b-c95e-4b4c-be25-0eff5c764500",
+	        "seller": {
+	          "code": "stenagam_sandbox",
+	          "description": "Stenagam Sandbox"
+	        },
+	        "amount": 20.7,
+	        "created_at": "2021-01-06T07:26:38.000Z",
+	        "updated_at": "2021-07-02T12:59:58.000Z"
+	      }
+	    ],
+	    "created_at": "2021-01-06T07:26:38.000Z",
+	    "updated_at": "2021-01-06T07:54:30.000+0000"
+	  }
+	]
 
 Vale ressaltar que os únicos tenants que não permitimos com o uso de API Keys são os com `type` = `maganets.SELLER` :-)
 
