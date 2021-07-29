@@ -13,7 +13,7 @@ Seguimos a [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), que descre
 
 ## API Keys vs OAuth2/OpenID
 
-As API Keys foram criadas, dentro da plataforma Magalu, com o objetivo de facilitar um primeiro contato do usuário desenvolvedor com a API Magalu, e por questões de segurança existem algumas restrições associadas a elas, para que não sejam utilizadas em ambiente de produção. O OpenID (superconjunto do OAuth2), em sua essência, é um protocolo/padrão aberto de autorização que permite que um terceiro se autentique (logon) e identifique em uma aplicação, para que a mesma possa agir em nome do respectivo terceiro, e é o seu fluxo que deve ser utilizado nas aplicações finais, em ambiente de produção.
+As API Keys foram criadas, dentro da plataforma Magalu, com o objetivo de facilitar um primeiro contato do usuário desenvolvedor com a API Magalu, e por questões de segurança existem algumas restrições associadas a elas, para que não sejam utilizadas em ambiente de produção. O OpenID (superconjunto do OAuth2), em sua essência, é um protocolo/padrão aberto de autorização que permite que um terceiro se autentique (login) e identifique em uma aplicação, para que a mesma possa agir em nome do respectivo terceiro, e é o seu fluxo que deve ser utilizado nas aplicações finais, em ambiente de produção.
 
 ## Base URLs
 
