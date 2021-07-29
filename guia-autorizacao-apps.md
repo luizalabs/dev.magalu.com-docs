@@ -194,7 +194,7 @@ curl -X POST "https://id.magalu.com/oauth/token" \
 Onde:
 - `$CLIENT_ID` deve ser o client ID da sua aplicação;
 - `$CLIENT_SECRET` deve ser a secret da sua aplicação;
-- `$REFREH_TOKEN` deve ser o Refresh Token obtido no fluxo de obtenção de tokens.
+- `$REFRESH_TOKEN` deve ser o Refresh Token obtido no fluxo de obtenção de tokens.
 
 Além disso, a resposta para essa requisição será a mesma da retornada na troca de um `code` por um `Access Token`.
 
