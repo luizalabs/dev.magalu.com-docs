@@ -67,7 +67,7 @@ Quando o usuário, consumidor da aplicação, precisar autorizar a aplicação n
 Dessa forma, um exemplo válido de URL para a qual o usuário deve ser redirecionado para autorizar a aplicação seria:
 
 ```
-${BASE_URL_AUTH}?response_type=code
+https://id.magalu.com/oauth/auth?response_type=code
 	&client_id=minha-aplicacao
 	&redirect_uri=https://minha-redirect-uri.dev
 	&state=xyz
@@ -102,7 +102,7 @@ Com esses parâmetros em mão, o `state` pode ser utilizado para implementação
 Com o valor de `code` em mãos, recebido no passo 3, é possível fazer uma requisição no nosso XXXX e obter um `Access Token`  (JWT) do usuário que autorizou a aplicação. A requisição pode ser feita da seguinte forma:
 
 ```curl
-curl -X POST "${BASE_URL_TOKEN}" \
+curl -X POST "https://id.magalu.com/oauth/token" \
 	--data-urlencode "grant_type=authorization_code" \
 	--data-urlencode "client_id=$CLIENT_ID" \
 	--data-urlencode "client_secret=$CLIENT_SECRET" \
@@ -184,7 +184,7 @@ Tendo esse Access Token em mãos, a aplicação pode consultar os tenants do usu
 É válido ressaltar, ainda, que o `Refresh Token` pode ser utilizado para renovar o `Access Token` do usuário na mesma sessão, e isso pode ser feito através da seguinte requisição:
 
 ```curl
-curl -X POST "${BASE_URL_TOKEN}" \
+curl -X POST "https://id.magalu.com/oauth/token" \
 	--data-urlencode "grant_type=refresh_token" \
 	--data-urlencode "client_id=$CLIENT_ID" \
 	--data-urlencode "client_secret=$CLIENT_SECRET" \
@@ -198,3 +198,26 @@ Onde:
 
 Além disso, a resposta para essa requisição será a mesma da retornada na troca de um `code` por um `Access Token`.
 
+### Validação de Access Tokens
+
+Uma vez obtido um `Access Token`, você pode ainda validá-lo utilizando os certificados presentes em https://id.magalu.com/oauth/certs. Essa validação pode ser feita facilmente utilizando alguma biblioteca existente para a sua linguagem.
+
+Em golang, por exemplo, isso pode ser feito utilizando a biblioteca [jwt-go](https://github.com/dgrijalva/jwt-go), com o seguinte trecho de código:
+
+```go
+import jwt "github.com/dgrijalva/jwt-go"
+// ...
+	jwks, err := keyfunc.Get(config.JwksURI, keyfunc.Options{
+		Client: &http.Client{
+			Timeout: TIMEOUT_PARA_REQUEST_NO_IDP,
+		},
+	})
+	if err != nil {
+		// Erro resgatando os certificados em https://id.magalu.com/oauth/certs
+	}
+	token, err := jwt.Parse(ACCESS_TOKEN, jwks.KeyFunc)
+	if err != nil {
+		// Erro na validação do Token JWT
+	}
+// ...
+```
