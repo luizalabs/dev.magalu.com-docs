@@ -9,7 +9,7 @@ Seguimos a [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), que descre
 ## Glossário
 
 - IDP: é o provedor de identidade (Identity Provider).
-- `Access Token`: token de acesso, é o resultado do fluxo de OAuth2/OpenID e é o que deve ser utilizado para consumir a API.
+- Access Token: token de acesso, é o resultado do fluxo de OAuth2/OpenID e é o que deve ser utilizado para consumir a API.
 
 ## API Keys vs OAuth2/OpenID
 
@@ -40,7 +40,7 @@ O fluxo de autorização utilizando OAuth2 é mais simples do que parece, em res
 1. O usuário, consumidor da aplicação, é levado para a URL de autenticação do nosso IDP, com um paramêtro que identifica a aplicação (`client_id`) a qual ele quer autorizar;
 2. O usuário faz o `login` no nosso IDP;
 3. O usuário é redirecionado para uma das `redirectUris` cadastradas na criação da aplicação (pode ser específica como parâmetro junto ao `client_id`), junto com um código de autorização;
-4. A aplicação faz a troca do código de autorização por um `Access Token` do usuário, que será utilizado pela aplicação para fazer as chamadas em nome do mesmo.
+4. A aplicação faz a troca do código de autorização por um Access Token do usuário, que será utilizado pela aplicação para fazer as chamadas em nome do mesmo.
 
 ## Autorizando uma aplicação
 
@@ -56,7 +56,7 @@ Quando o usuário, consumidor da aplicação, precisar autorizar a aplicação n
 - `client_id`: valor do client id da aplicação, criada no DevPortal
 	- Exemplo: "minha-aplicacao-para-sellers"
 - `redirect_uri`: uma das `redirectUris` cadastradas no momento da criação da aplicação
-	- Indica a URI para qual o usuário será enviado com o código a ser trocado pelo `Access Token`. Aqui, deve ser colocada a URI de `callback` da sua aplicação.
+	- Indica a URI para qual o usuário será enviado com o código a ser trocado pelo Access Token. Aqui, deve ser colocada a URI de `callback` da sua aplicação.
 - `scope`: são os scopes os quais a sua aplicação precisa ter acesso na conta do usuário. 
 	- No momento atual, é necessário passar somente o valor `openid`. Com ele, além dos scopes padrão, é possível utilizar o token gerado para consumo de toda a API disponibilizada. Entretanto, isso pode ser alterado conforme novas APIs forem sendo disponibilizadas.
 - `state`: é um parâmetro de segurança, que deve ser gerado aleatoriamente pela aplicação.
@@ -95,11 +95,11 @@ https://minha-redirect-uri.dev?state=fj8o3n7bdy1op5
 ```
 
 E, dessa forma, você deve receber os parâmetros presentes na URL de redirecionamento e utilizá-los para completar o fluxo. 
-Com esses parâmetros em mão, o `state` pode ser utilizado para implementação de proteção contra ataque de CSRF, conforme referenciado anteriormente, e o `session_state` é um identificador interno para identificar a sessão do usuário, que pode ser ignorado por hora. Por fim, o valor de `code` pode ser utilizado para resgatar um `Access Token` válido do usuário consumidor da aplicação, conforme descrito no passo 4.
+Com esses parâmetros em mão, o `state` pode ser utilizado para implementação de proteção contra ataque de CSRF, conforme referenciado anteriormente, e o `session_state` é um identificador interno para identificar a sessão do usuário, que pode ser ignorado por hora. Por fim, o valor de `code` pode ser utilizado para resgatar um Access Token válido do usuário consumidor da aplicação, conforme descrito no passo 4.
 
 ### Passo 4
 
-Com o valor de `code` em mãos, recebido no passo 3, é possível fazer uma requisição no nosso IDP e obter um `Access Token`  (JWT) do usuário que autorizou a aplicação. A requisição pode ser feita da seguinte forma:
+Com o valor de `code` em mãos, recebido no passo 3, é possível fazer uma requisição no nosso IDP e obter um Access Token  (JWT) do usuário que autorizou a aplicação. A requisição pode ser feita da seguinte forma:
 
 ```curl
 curl -X POST "https://id.magalu.com/oauth/token" \
@@ -123,7 +123,7 @@ Onde:
 
 ### Tokens obtidos
 
-Após a requisição de troca de `code` por `Access Token`, é esperada uma resposta como essa
+Após a requisição de troca de `code` por Access Token, é esperada uma resposta como essa
 
 ```json
 {
@@ -139,7 +139,7 @@ Após a requisição de troca de `code` por `Access Token`, é esperada uma resp
 }
 ```
 
-Onde o `access_token` é o `Access Token` a ser utilizado pela aplicação, e pode ser de dois formatos, e `scope` tem os valores `default` do nosso provedor de identidade, somados aos pedidos pela aplicação. Observação: os valores `default` de `scope` são, até o momento, `spi-tenants` e `email`.
+Onde o `access_token` é o Access Token a ser utilizado pela aplicação, e pode ser de dois formatos, e `scope` tem os valores `default` do nosso provedor de identidade, somados aos pedidos pela aplicação. Observação: os valores `default` de `scope` são, até o momento, `spi-tenants` e `email`.
 Estamos trabalhando no desenvolvimento de novos scopes, mas até o momento os pré-configurados como padrão, juntos ao `openid`, são suficientes para que qualquer parte da API seja utilizada.
 
 Dessa forma, então o Access Token quando aberto conterá um payload com o seguinte formato:
@@ -185,7 +185,7 @@ Tendo esse Access Token em mãos, a aplicação pode consultar os tenants do usu
 
 ### Renovação de Access Token
 
-É válido ressaltar, ainda, que o `Refresh Token` pode ser utilizado para renovar o `Access Token` do usuário na mesma sessão, e isso pode ser feito através da seguinte requisição:
+É válido ressaltar, ainda, que o Refresh Token pode ser utilizado para renovar o Access Token do usuário na mesma sessão, e isso pode ser feito através da seguinte requisição:
 
 ```curl
 curl -X POST "https://id.magalu.com/oauth/token" \
@@ -200,11 +200,11 @@ Onde:
 - `$CLIENT_SECRET` deve ser a secret da sua aplicação;
 - `$REFRESH_TOKEN` deve ser o Refresh Token obtido no fluxo de obtenção de tokens.
 
-Além disso, a resposta para essa requisição será a mesma da retornada na troca de um `code` por um `Access Token`.
+Além disso, a resposta para essa requisição será a mesma da retornada na troca de um `code` por um Access Token.
 
 ### Validação de Access Tokens
 
-Uma vez obtido um `Access Token`, você pode ainda validá-lo utilizando os certificados presentes em https://id.magalu.com/oauth/certs. Essa validação pode ser feita facilmente utilizando alguma biblioteca existente para a sua linguagem.
+Uma vez obtido um Access Token, você pode ainda validá-lo utilizando os certificados presentes em https://id.magalu.com/oauth/certs. Essa validação pode ser feita facilmente utilizando alguma biblioteca existente para a sua linguagem.
 
 Em golang, por exemplo, isso pode ser feito utilizando a biblioteca [jwt-go](https://github.com/dgrijalva/jwt-go), com o seguinte trecho de código:
 
