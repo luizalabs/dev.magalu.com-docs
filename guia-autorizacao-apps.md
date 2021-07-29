@@ -39,7 +39,7 @@ Mais informações sobre os endpoints citados podem ser consultadas na especific
 O fluxo de autorização utilizando OAuth2 é mais simples do que parece, em resumo:
 1. O usuário, consumidor da aplicação, é levado para a URL de autenticação do nosso IDP, com um parâmetro que identifica a aplicação (`client_id`) que ele quer autorizar;
 2. O usuário faz o `login` no nosso IDP;
-3. O usuário é redirecionado para uma das `redirectUris` cadastradas na criação da aplicação (pode ser específica como parâmetro junto ao `client_id`), junto com um código de autorização;
+3. O usuário é redirecionado para uma das `redirect_uris` cadastradas na criação da aplicação (pode ser específica como parâmetro junto ao `client_id`), junto com um código de autorização;
 4. A aplicação faz a troca do código de autorização por um Access Token do usuário, que será utilizado pela aplicação para fazer as chamadas em nome do mesmo.
 
 ## Autorizando uma aplicação
