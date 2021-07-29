@@ -4,17 +4,16 @@
 ## Introdução
 
 Este é o guia do provedor de identidade da Plataforma Magalu. É por ele que os usuários finais farão a autorização de aplicações para o uso de suas contas e se autenticarão nos nossos sistemas.
-Seguimos a [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), que descreve o fluxo de OAuth 2.0, e dessa forma boa parte dos fluxos aqui apresentados já são bastante conhecidos pela comunidade.
-
+Seguimos a [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), que descreve o fluxo de OAuth 2.0, e a [especificação do OpenID](https://openid.net/specs/openid-connect-core-1_0.html), que descreve o fluxo de OpenID Connect, e dessa forma boa parte dos fluxos aqui apresentados já são bastante conhecidos pela comunidade.
 
 ## Glossário
 
 - IDP: é o provedor de identidade (Identity Provider).
-- `Access Token`: token de acesso, é o resultado do fluxo de OAuth2 e é o que deve ser utilizado para consumir a API.
+- `Access Token`: token de acesso, é o resultado do fluxo de OAuth2/OpenID e é o que deve ser utilizado para consumir a API.
 
-## API Keys vs OAuth2
+## API Keys vs OAuth2/OpenID
 
-As API Keys foram criadas, dentro da plataforma Magalu, com o objetivo de facilitar um primeiro contato do usuário desenvolvedor com a API Magalu, e por questões de segurança existem algumas restrições associadas a elas, para que não sejam utilizadas em ambiente de produção. O OAuth2, em sua essência, é um protocolo/padrão aberto de autorização que permite que um terceiro se autentique (logon) em uma aplicação, para que a aplicação possa agir em nome do respectivo terceiro, e é o seu fluxo que deve ser utilizado nas aplicações finais, em ambiente de produção.
+As API Keys foram criadas, dentro da plataforma Magalu, com o objetivo de facilitar um primeiro contato do usuário desenvolvedor com a API Magalu, e por questões de segurança existem algumas restrições associadas a elas, para que não sejam utilizadas em ambiente de produção. O OpenID (superconjunto do OAuth2), em sua essência, é um protocolo/padrão aberto de autorização que permite que um terceiro se autentique (logon) e identifique em uma aplicação, para que a mesma possa agir em nome do respectivo terceiro, e é o seu fluxo que deve ser utilizado nas aplicações finais, em ambiente de produção.
 
 ## Base URLs
 
@@ -54,12 +53,12 @@ Quando o usuário, consumidor da aplicação, precisar autorizar a aplicação n
 
 - `response_type`: "code"
 	- Esse parâmetro é obrigatório e o único valor aceito para ele é o da string "code".
--  `client_id`: valor do client id da aplicação, criada no DevPortal
+- `client_id`: valor do client id da aplicação, criada no DevPortal
 	- Exemplo: "minha-aplicacao-para-sellers"
 - `redirect_uri`: uma das `redirectUris` cadastradas no momento da criação da aplicação
-	- Indica a URI para qual o usuário será enviado com o código a ser trocado pelo `Access Token`. Aqui, deve ser colocada a URI de `callback` da sua aplicação. Caso somente um valor tenha sido cadastrado, esse parâmetro pode ser omitido e a URI cadastrada será utilizada como padrão.
+	- Indica a URI para qual o usuário será enviado com o código a ser trocado pelo `Access Token`. Aqui, deve ser colocada a URI de `callback` da sua aplicação.
 - `scope`: são os scopes os quais a sua aplicação precisa ter acesso na conta do usuário. 
-	- No momento atual, os `scopes` padrão já são suficientes para consumo de toda a API disponibilizada, e portanto esse parâmetro pode ser omitido. Entretanto, isso pode ser alterado conforme novas APIs forem sendo disponibilizadas
+	- No momento atual, é necessário passar somente o valor `openid`. Com ele, além dos scopes padrão, é possível utilizar o token gerado para consumo de toda a API disponibilizada. Entretanto, isso pode ser alterado conforme novas APIs forem sendo disponibilizadas.
 - `state`: é um parâmetro de segurança, que deve ser gerado aleatoriamente pela aplicação.
 	- Esse parâmetro é opcional, porém é citado como recomendado na especificação do OAuth2.
 	- Mais informações podem ser consultadas na [seção 10.12 da RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-10.12).
@@ -71,9 +70,10 @@ https://id.magalu.com/oauth/auth?response_type=code
 	&client_id=minha-aplicacao
 	&redirect_uri=https://minha-redirect-uri.dev
 	&state=xyz
+	&scope=openid
 ```
 
-Onde `response_type`= `code`, `client_id` = `minha-aplicacao`, `redirect_uri` = `https://minha-redirect-uri.dev` e `state` = `xyz`.
+Onde `response_type`= `code`, `client_id` = `minha-aplicacao`, `redirect_uri` = `https://minha-redirect-uri.dev`, `state` = `xyz` e `scope` = `openid`.
 
 ### Passo 2
 
@@ -86,7 +86,7 @@ P.S.: caso o usuário já tenha autorizado a aplicação e esses dados ainda est
 
 ### Passo 3
 
-O usuário, após o login ou caso já esteja logado, será redirecionado para a `redirect_uri` em questão. Como citado anteriormente, ela será a passada como parâmetro para ${BASE_URL_AUTH} ou então será a padrão caso somente uma tenha sido cadastrada (no DevPortal). Seguindo os parâmetro do exemplo do passo 1, o usuário seria redirecionado para:
+O usuário, após o login ou caso já esteja logado, será redirecionado para a `redirect_uri` em questão. Como citado anteriormente, ela será a passada como parâmetro para https://id.magalu.com/oauth/auth, e deve ter sido cadastrada anteriormente (no DevPortal). Seguindo os parâmetro do exemplo do passo 1, o usuário seria redirecionado para:
 
 ```
 https://minha-redirect-uri.dev?state=fj8o3n7bdy1op5
@@ -107,7 +107,8 @@ curl -X POST "https://id.magalu.com/oauth/token" \
 	--data-urlencode "client_id=$CLIENT_ID" \
 	--data-urlencode "client_secret=$CLIENT_SECRET" \
 	--data-urlencode "code=$CODE" \
-	--data-urlencode "scope=$SCOPE"
+	--data-urlencode "scope=$SCOPE" \
+	--data-urlencode "redirect_uri=$REDIRECT_URI"
 ```
 
 Onde:
@@ -115,9 +116,10 @@ Onde:
 	- No nosso exemplo, seria `minha-aplicacao`.
 - `$CLIENT_SECRET` deve ser a secret da sua aplicação;
 	- Ela pode ser consultada no DevPortal, e é um valor secreto que não deve ser compartilhado em hipótese alguma.
-- `$CODE` deve ser o valor recebido no parâmetro `code` após o redirecionamento para a sua `redirect_uri` no passo 3.
+- `$CODE` deve ser o valor recebido no parâmetro `code` após o redirecionamento para a sua `redirect_uri` no passo 3;
 	- No nosso exemplo seria `6ccdb1f7-eb3d-49f0-894e-90b64dd6ead0.94c44902-0d37-41b2-b6f1-45808ce8eb2f.1e39527d-02aa-4fa0-97c9-fe6ce98fb93e`.
-- `$SCOPE` como citado anteriormente, não precisa ser alterado no momento e pode ser omitido.
+- `$SCOPE` como citado anteriormente, deve continuar possuindo o valor `openid`;
+- `$REDIRECT_URI` deve ser o valor da URI de redirecionamento utilizada no fluxo, e passada anteriormente para https://id.magalu.com/oauth/auth.
 
 ### Tokens obtidos
 
@@ -125,34 +127,36 @@ Após a requisição de troca de `code` por `Access Token`, é esperada uma resp
 
 ```json
 {
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhT2ZGNERFOG1PcnFyQjJYeTA3U1dOZzEyTHVfc3BKRThWQnFDb0tGR0VZIn0.eyJleHAiOjE2Mjc0NzczNjcsImlhdCI6MTYyNzQ3NzMwNywianRpIjoiYzc1YzM4YWItODFmYy00ZWQ3LTkyMzUtZjhjNGI3YmQ0MjgyIiwiaXNzIjoiaHR0cHM6Ly9pZC5tYWdhbHUuY29tL2F1dGgvcmVhbG1zL21hc3RlciIsInN1YiI6IjY0OGU4OWUzLTNiZTQtNDhhNy04NmMwLWM4ZWVkNWM0MjA3OCIsInR5cCI6IkJlYXJlciIsImF6cCI6Im1pbmhhLWFwbGljYWNhbyIsInNlc3Npb25fc3RhdGUiOiI1MzgwNDZlYy1mOWE1LTRlMGQtYmUxZC1kNzMxOTU3MWU1YmYiLCJhY3IiOiIxIiwic2NvcGUiOiJzcGktdGVuYW50cyBlbWFpbCIsInRlbmFudHMiOlt7InV1aWQiOiIwMDAwNTVkNS1jYThjLTRjZDUtYmMzOC1jYTVmYTBmOGUyM2EiLCJ0eXBlIjoic3RlbmFnYW0uQ1VTVE9NRVIiLCJpbnRlcm5hbF9pZCI6IjAwMDA1NWQ1LWNhOGMtNGNkNS1iYzM4LWNhNWZhMGY4ZTIzYSJ9LHsidXVpZCI6IjIxZmVhNzNjLWUyNDQtNDk3YS04NTQwLWJlMGQzYzU4MzU5NiIsInR5cGUiOiJzdGVuYWdhbS5TRUxMRVIiLCJpbnRlcm5hbF9pZCI6InN0ZW5hZ2FtX3NhbmRib3gifSx7InV1aWQiOiIyOGNkNzRiNC05YzE0LTRmMjAtYjZlZC1mMjViYTQ0Njc0OGEiLCJ0eXBlIjoibWFnYW5ldHMuQ1VTVE9NRVIiLCJpbnRlcm5hbF9pZCI6IjI4Y2Q3NGI0LTljMTQtNGYyMC1iNmVkLWYyNWJhNDQ2NzQ4YSJ9XSwiYXVkIjoicHVibGljIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJvcmciOiJtYWdhbHUiLCJlbWFpbCI6ImFsY2lkZXNtaWdAZ21haWwuY29tIn0.kq8TmwQ3vs_kSaleTzJNEn4R1HerykK_aQIOH_JeXlEzBYDJVt51Vf1o-rBPaQHE3RgAZdqN73yweW9KRNcSiaCyYfuLM-usY5Kwpd8gJO7T9LqP3fpmxya0ZEV76HYMZoAJaxvg8a11BDV7PjHxfkSEEyq7QU7xMo3w-FuTnSLdBgoNl5ImUtNTmYLJrKiwEKxjfGIpe__XgLsjBcVPYliCGvna_k2RjptWs9BA1C8l3gX__G2mbfMQo0Lo3EBtIgeEhq0YLVEoOf9ZqYOPo_IdC-skgr_V5flBH3FXaI5h7wO-PUkxU6eMGx1DQ6eoKMoDRx3BBR8t1HM7qmeg_w",
-  "expires_in": 60,
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhT2ZGNERFOG1PcnFyQjJYeTA3U1dOZzEyTHVfc3BKRThWQnFDb0tGR0VZIn0.eyJleHAiOjE2Mjc1ODc2NDAsImlhdCI6MTYyNzU4NDA0MCwiYXV0aF90aW1lIjoxNjI3NTg0MDI3LCJqdGkiOiJhMzQwYzE4YS05ZTExLTQwMjAtYjc1Yi1hNTU4ZmUwNDg0OGYiLCJpc3MiOiJodHRwczovL2lkLm1hZ2FsdS5jb20vYXV0aC9yZWFsbXMvbWFzdGVyIiwic3ViIjoiNjQ4ZTg5ZTMtM2JlNC00OGE3LTg2YzAtYzhlZWQ1YzQyMDc4IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWluaGEtYXBsaWNhY2FvIiwic2Vzc2lvbl9zdGF0ZSI6IjNjM2RkNTIyLTJmOTctNGE3YS04ZDY5LWMyOWE5M2M1Y2YzZCIsImFjciI6IjEiLCJzY29wZSI6Im9wZW5pZCBzcGktdGVuYW50cyBlbWFpbCIsInRlbmFudHMiOlt7InV1aWQiOiIwMDAwNTVkNS1jYThjLTRjZDUtYmMzOC1jYTVmYTBmOGUyM2EiLCJ0eXBlIjoic3RlbmFnYW0uQ1VTVE9NRVIiLCJpbnRlcm5hbF9pZCI6IjAwMDA1NWQ1LWNhOGMtNGNkNS1iYzM4LWNhNWZhMGY4ZTIzYSJ9LHsidXVpZCI6IjIxZmVhNzNjLWUyNDQtNDk3YS04NTQwLWJlMGQzYzU4MzU5NiIsInR5cGUiOiJzdGVuYWdhbS5TRUxMRVIiLCJpbnRlcm5hbF9pZCI6InN0ZW5hZ2FtX3NhbmRib3gifSx7InV1aWQiOiIyOGNkNzRiNC05YzE0LTRmMjAtYjZlZC1mMjViYTQ0Njc0OGEiLCJ0eXBlIjoibWFnYW5ldHMuQ1VTVE9NRVIiLCJpbnRlcm5hbF9pZCI6IjI4Y2Q3NGI0LTljMTQtNGYyMC1iNmVkLWYyNWJhNDQ2NzQ4YSJ9XSwiYXVkIjoicHVibGljIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJvcmciOiJtYWdhbHUiLCJlbWFpbCI6ImFsY2lkZXNtaWdAZ21haWwuY29tIn0.c-wbcSPkL04j62RH6oFeovV1mJ-t2qZsQ55G_Hxqp3jeUE5RCWUglIBWS0Bdu0O2Vg80cz98jCoM32ptdLZXwZJadGIv41ZCqUtVxnqAve5kOqyjvUQDH95rzBMDGWQNPxgPmpaAJOStKqSLBX7Blt-Dsgm_7tXibKwdzZ9ADV3NiH9cngpJy_8wLWMahhuF5EUsxC9alj0qn5Uj8XoxGVssSYG8yJ72mqf7LMhtqp12pCZFQ8fKsmayxLEOrlfKsWlOq5W7XM9xVSfGbMOGSvPtGt1iWlHCwoPyI6bmSGYIFjDoJozZ5nRjlIs6aFK9-tDBwO9jSv9rtJhfc8mt7Q",
+  "expires_in": 3600,
   "refresh_expires_in": 1800,
-  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0ZTBmYWI0Ny01YjFiLTRmNjUtOTRkMS1iMGNmODE2MDQ3ZmEifQ.eyJleHAiOjE2Mjc0NzkxMDcsImlhdCI6MTYyNzQ3NzMwNywianRpIjoiNWU3ZTYwZDMtNjk5MS00ZTAxLTgwMzUtMDdlNGQ1N2MyNzhjIiwiaXNzIjoiaHR0cHM6Ly9pZC5tYWdhbHUuY29tL2F1dGgvcmVhbG1zL21hc3RlciIsImF1ZCI6Imh0dHBzOi8vaWQubWFnYWx1LmNvbS9hdXRoL3JlYWxtcy9tYXN0ZXIiLCJzdWIiOiI2NDhlODllMy0zYmU0LTQ4YTctODZjMC1jOGVlZDVjNDIwNzgiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoibWluaGEtYXBsaWNhY2FvIiwic2Vzc2lvbl9zdGF0ZSI6IjUzODA0NmVjLWY5YTUtNGUwZC1iZTFkLWQ3MzE5NTcxZTViZiIsInNjb3BlIjoic3BpLXRlbmFudHMgZW1haWwifQ.zzPFcKz2A1MMFzeXkRIMMhTSC7whAHSX1fKEFZMAljE",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0ZTBmYWI0Ny01YjFiLTRmNjUtOTRkMS1iMGNmODE2MDQ3ZmEifQ.eyJleHAiOjE2Mjc1ODU4NDAsImlhdCI6MTYyNzU4NDA0MCwianRpIjoiNjk0MTkyMzctNGE3ZC00ZWI3LWEwY2ItMTNiYTFlNzdhNTliIiwiaXNzIjoiaHR0cHM6Ly9pZC5tYWdhbHUuY29tL2F1dGgvcmVhbG1zL21hc3RlciIsImF1ZCI6Imh0dHBzOi8vaWQubWFnYWx1LmNvbS9hdXRoL3JlYWxtcy9tYXN0ZXIiLCJzdWIiOiI2NDhlODllMy0zYmU0LTQ4YTctODZjMC1jOGVlZDVjNDIwNzgiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoibWluaGEtYXBsaWNhY2FvIiwic2Vzc2lvbl9zdGF0ZSI6IjNjM2RkNTIyLTJmOTctNGE3YS04ZDY5LWMyOWE5M2M1Y2YzZCIsInNjb3BlIjoib3BlbmlkIHNwaS10ZW5hbnRzIGVtYWlsIn0.QIaBCGVBiUX-m7ZbMjjD191-KllzfYnrLsbgkVueBVA",
   "token_type": "Bearer",
-  "not-before-policy": 0,
-  "session_state": "538046ec-f9a5-4e0d-be1d-d7319571e5bf",
-  "scope": "spi-tenants email"
+  "id_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhT2ZGNERFOG1PcnFyQjJYeTA3U1dOZzEyTHVfc3BKRThWQnFDb0tGR0VZIn0.eyJleHAiOjE2Mjc1ODc2NDAsImlhdCI6MTYyNzU4NDA0MCwiYXV0aF90aW1lIjoxNjI3NTg0MDI3LCJqdGkiOiJkNDIwY2ZlNy04N2UwLTQyY2ItODQ3NC0zMjNjNTFhZTBlY2IiLCJpc3MiOiJodHRwczovL2lkLm1hZ2FsdS5jb20vYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoibWluaGEtYXBsaWNhY2FvIiwic3ViIjoiNjQ4ZTg5ZTMtM2JlNC00OGE3LTg2YzAtYzhlZWQ1YzQyMDc4IiwidHlwIjoiSUQiLCJhenAiOiJtaW5oYS1hcGxpY2FjYW8iLCJzZXNzaW9uX3N0YXRlIjoiM2MzZGQ1MjItMmY5Ny00YTdhLThkNjktYzI5YTkzYzVjZjNkIiwiYXRfaGFzaCI6Ii1VMTF4alljc2RKSl9ZdXJMOU9wemciLCJhY3IiOiIxIiwidGVuYW50cyI6W3sidXVpZCI6IjAwMDA1NWQ1LWNhOGMtNGNkNS1iYzM4LWNhNWZhMGY4ZTIzYSIsInR5cGUiOiJzdGVuYWdhbS5DVVNUT01FUiIsImludGVybmFsX2lkIjoiMDAwMDU1ZDUtY2E4Yy00Y2Q1LWJjMzgtY2E1ZmEwZjhlMjNhIn0seyJ1dWlkIjoiMjFmZWE3M2MtZTI0NC00OTdhLTg1NDAtYmUwZDNjNTgzNTk2IiwidHlwZSI6InN0ZW5hZ2FtLlNFTExFUiIsImludGVybmFsX2lkIjoic3RlbmFnYW1fc2FuZGJveCJ9LHsidXVpZCI6IjI4Y2Q3NGI0LTljMTQtNGYyMC1iNmVkLWYyNWJhNDQ2NzQ4YSIsInR5cGUiOiJtYWdhbmV0cy5DVVNUT01FUiIsImludGVybmFsX2lkIjoiMjhjZDc0YjQtOWMxNC00ZjIwLWI2ZWQtZjI1YmE0NDY3NDhhIn1dLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm9yZyI6Im1hZ2FsdSIsImVtYWlsIjoiYWxjaWRlc21pZ0BnbWFpbC5jb20ifQ.bQUi-dNbEZMPWlN0PTrnG8bOPRKvWbhOMnbxC8Cy1PdhVbsXphKqZkQGST4FgnYifNBzHyGWG44V--1EY-wxuJwILGArm4Em758HwYeB2CIdYhb7YIyy_WTJk-1H7A8DLK3sxaW3iubKf0VgRgsZGJGLNVdHKLUXdnvpUH7s_mWnOdoachutqe6nIdvTex_EW3DCux9_2ZCqROdO8bqmVQwBVSoOrwMcfNm9EdfgI5qhqlBWFaBl8xJoQQr-bivFchNfT29oNRMaBqihyicgpK3TSNwqwJzHxdmfF30KKQzThWgPp39Vlws98bvJFq82-TWUhmZmrO5Gkb6zeP2XFA",
+  "not-before-policy": 1627480351,
+  "session_state": "3c3dd522-2f97-4a7a-8d69-c29a93c5cf3d",
+  "scope": "openid spi-tenants email"
 }
 ```
 
 Onde o `access_token` é o `Access Token` a ser utilizado pela aplicação, e pode ser de dois formatos, e `scope` tem os valores `default` do nosso provedor de identidade, somados aos pedidos pela aplicação. Observação: os valores `default` de `scope` são, até o momento, `spi-tenants` e `email`.
-Estamos trabalhando no desenvolvimento de novos scopes, mas até o momento os pré-configurados como padrão são suficientes para que qualquer parte da API seja utilizada.
+Estamos trabalhando no desenvolvimento de novos scopes, mas até o momento os pré-configurados como padrão, juntos ao `openid`, são suficientes para que qualquer parte da API seja utilizada.
 
-Caso a aplicação não peça nenhum `scope` adicional, o que é esperado por hora, o parâmetro `scope` pode ser omitido do request, e então o Access Token quando aberto conterá um payload com o seguinte formato:
+Dessa forma, então o Access Token quando aberto conterá um payload com o seguinte formato:
 
 ```json
 {
-  "exp": 1627477367,
-  "iat": 1627477307,
-  "jti": "c75c38ab-81fc-4ed7-9235-f8c4b7bd4282",
+  "exp": 1627587640,
+  "iat": 1627584040,
+  "auth_time": 1627584027,
+  "jti": "a340c18a-9e11-4020-b75b-a558fe04848f",
   "iss": "https://id.magalu.com/auth/realms/master",
   "sub": "648e89e3-3be4-48a7-86c0-c8eed5c42078",
   "typ": "Bearer",
   "azp": "minha-aplicacao",
-  "session_state": "538046ec-f9a5-4e0d-be1d-d7319571e5bf",
+  "session_state": "3c3dd522-2f97-4a7a-8d69-c29a93c5cf3d",
   "acr": "1",
-  "scope": "spi-tenants email",
+  "scope": "openid spi-tenants email",
   "tenants": [
     {
       "uuid": "000055d5-ca8c-4cd5-bc38-ca5fa0f8e23a",
