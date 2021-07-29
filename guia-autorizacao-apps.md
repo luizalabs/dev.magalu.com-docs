@@ -3,7 +3,7 @@
 
 ## Introdução
 
-XXXX é o provedor de identidade da Plataforma Magalu. É por ele que os usuários finais farão a autorização de aplicações para o uso de suas contas e se autenticarão nos nossos sistemas.
+Este é o guia do provedor de identidade da Plataforma Magalu. É por ele que os usuários finais farão a autorização de aplicações para o uso de suas contas e se autenticarão nos nossos sistemas.
 Seguimos a [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), que descreve o fluxo de OAuth 2.0, e dessa forma boa parte dos fluxos aqui apresentados já são bastante conhecidos pela comunidade.
 
 
@@ -17,7 +17,23 @@ Seguimos a [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), que descre
 As API Keys foram criadas, dentro da plataforma Magalu, com o objetivo de facilitar um primeiro contato do usuário desenvolvedor com a API Magalu, e por questões de segurança existem algumas restrições associadas a elas, para que não sejam utilizadas em ambiente de produção. O OAuth2, em sua essência, é um protocolo/padrão aberto de autorização que permite que um terceiro se autentique (logon) em uma aplicação, para que a aplicação possa agir em nome do respectivo terceiro, e é o seu fluxo que deve ser utilizado nas aplicações finais, em ambiente de produção.
 
 ## Base URLs
-Pendentes
+
+| Ambiente 	| Base URL                    	|
+|----------	|-----------------------------	|
+| Produção 	| https://id.magalu.com/oauth 	|
+
+### Endpoints
+
+| Endpoint                     	| URL                                    	|
+|------------------------------	|----------------------------------------	|
+| Autorização                  	| https://id.magalu.com/oauth/auth       	|
+| Resgate de tokens            	| https://id.magalu.com/oauth/token      	|
+| Introspect de tokens         	| https://id.magalu.com/oauth/introspect 	|
+| Resgate de dados do usuário  	| https://id.magalu.com/oauth/userinfo   	|
+| Logout de usuário            	| https://id.magalu.com/oauth/logout     	|
+| Certificados para validações 	| https://id.magalu.com/oauth/certs      	|
+
+Mais informações sobre os endpoints citados podem ser consultadas na especificação (OpenAPI) do provedor de identidade, que estará disponível em breve.
 
 ## Entendendo o fluxo
 
