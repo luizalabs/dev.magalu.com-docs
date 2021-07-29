@@ -99,7 +99,7 @@ Com esses parâmetros em mão, o `state` pode ser utilizado para implementação
 
 ### Passo 4
 
-Com o valor de `code` em mãos, recebido no passo 3, é possível fazer uma requisição no nosso XXXX e obter um `Access Token`  (JWT) do usuário que autorizou a aplicação. A requisição pode ser feita da seguinte forma:
+Com o valor de `code` em mãos, recebido no passo 3, é possível fazer uma requisição no nosso IDP e obter um `Access Token`  (JWT) do usuário que autorizou a aplicação. A requisição pode ser feita da seguinte forma:
 
 ```curl
 curl -X POST "https://id.magalu.com/oauth/token" \
