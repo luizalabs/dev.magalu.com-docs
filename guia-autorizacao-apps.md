@@ -210,7 +210,7 @@ Em golang, por exemplo, isso pode ser feito utilizando a biblioteca [jwt-go](htt
 ```go
 import jwt "github.com/dgrijalva/jwt-go"
 // ...
-	jwks, err := keyfunc.Get(config.JwksURI, keyfunc.Options{
+	jwks, err := keyfunc.Get("https://id.magalu.com/oauth/certs", keyfunc.Options{
 		Client: &http.Client{
 			Timeout: TIMEOUT_PARA_REQUEST_NO_IDP,
 		},
