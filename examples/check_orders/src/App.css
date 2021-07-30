@@ -1,0 +1,24 @@
+
+#root {
+  min-height: 100vh;
+  max-width: 500px;
+}
+
+h3 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.c-order {
+  border-bottom: 1px solid #00cccc;
+  padding-bottom: 0%;
+  display: flex;
+} 
+
+.back-arrow {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 5%;
+  margin-right: -5%;
+}
+
