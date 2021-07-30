@@ -6,6 +6,8 @@
 Este é o guia do provedor de identidade da Plataforma Magalu. É por ele que os usuários finais farão a autorização de aplicações para o uso de suas contas e se autenticarão nos nossos sistemas.
 Seguimos a [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), que descreve o fluxo de OAuth 2.0, e a [especificação do OpenID](https://openid.net/specs/openid-connect-core-1_0.html), que descreve o fluxo de OpenID Connect, e dessa forma boa parte dos fluxos aqui apresentados já são bastante conhecidos pela comunidade.
 
+É válido ressaltar que, para que o fluxo aqui presente possa ser exercido, é necessário que uma aplicação tenha sido criada no DevPortal, o nosso portal para desenvolvedores. No portal, você pode fazer a criação e configuração de uma aplicação, especificando os parâmetros que serão utilizados neste guia e tendo acesso aos valores de identificador e chave de aplicação (`client_id` e `secret`).
+
 ## Glossário
 
 - IDP: é o provedor de identidade (Identity Provider).
