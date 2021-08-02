@@ -138,7 +138,7 @@ Após a requisição de troca de `code` por Access Token, é esperada uma respos
 }
 ```
 
-Onde o `access_token` é o Access Token a ser utilizado pela aplicação, e pode ser de dois formatos, e `scope` tem os valores `default` do nosso provedor de identidade, somados aos pedidos pela aplicação. Observação: os valores `default` de `scope` são, até o momento, `spi-tenants` e `email`.
+Onde o `access_token` é o Access Token a ser utilizado pela aplicação, e pode ser de dois formatos, e `scope` tem os valores `default` do nosso provedor de identidade, somados aos pedidos pela aplicação. Observação: os valores `default` de `scope` são, até o momento, `spi-tenants`, `seller_access` e `email`.
 Estamos trabalhando no desenvolvimento de novos scopes, mas até o momento os pré-configurados como padrão, juntos ao `openid`, são suficientes para que qualquer parte da API seja utilizada.
 
 Dessa forma, então o Access Token quando aberto conterá um payload com o seguinte formato:
@@ -180,7 +180,7 @@ Dessa forma, então o Access Token quando aberto conterá um payload com o segui
 }
 ```
 
-Tendo esse Access Token em mãos, a aplicação pode consultar os tenants do usuário no `Account` e então fazer as requisições na nossa API. :-)
+Ainda assim, caso a conta esteja vinculada a um seller, existirá mais um atributo `seller` no payload, que é de uso interno da plataforma. Tendo esse Access Token em mãos, a aplicação pode consultar os tenants do usuário no `Account` e então fazer as requisições na nossa API. :-)
 
 ### Renovação de Access Token
 
