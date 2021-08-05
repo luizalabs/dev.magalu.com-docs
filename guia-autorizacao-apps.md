@@ -57,7 +57,7 @@ Esse passo consiste na [seção 4.1.1 da RFC do OAuth2](https://datatracker.ietf
 Quando o usuário, consumidor da aplicação, precisar autorizar a aplicação na Plataforma Magalu, é necessário fazer um redirecionamento (utilizando o método `GET`) do usuário para a URL de autorização (descrita em "[Base URLs](#base-url)") com os seguintes parâmetros:
 
 - `response_type`: "code"
-  - Esse parâmetro é obrigatório e o único valor aceito para ele é o da string "code".
+  - Esse parâmetro é obrigatório e o único valor aceito para ele é a string "code".
   - Exemplo: `response_type=code`
 - `client_id`: valor do client id da aplicação, criada no DevPortal.
   - Exemplo: `client_id=minha-aplicacao-para-sellers`
