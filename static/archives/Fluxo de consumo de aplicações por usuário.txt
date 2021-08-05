@@ -1,0 +1,25 @@
+title Fluxo de consumo de aplicações por usuário
+
+actor Usuário consumidor de aplicação
+
+Usuário consumidor de aplicação->Aplicação: Acessa a aplicação
+Aplicação->IDP: Redireciona com os query parameters
+IDP-->Usuário consumidor de aplicação: Solicita login
+
+Usuário consumidor de aplicação->IDP: Login
+
+opt Primeiro Acesso na Aplicação
+IDP-->Usuário consumidor de aplicação: Solicita aceite do Consent
+Usuário consumidor de aplicação->IDP: Consent aceito
+end
+
+IDP-->Aplicação: Redirect para redirect_uri com code como query param
+
+Aplicação->IDP: Acessa redirect_uri com code como query param
+Aplicação->IDP: Troca code por Access Token
+IDP-->Aplicação: Retorna Access Token
+
+Usuário consumidor de aplicação->Aplicação: Consulta Pedidos
+Aplicação->API Magalu: GET /maestro/v1/orders -H "Authorization: Bearer ${ACCESS_TOKEN}"
+API Magalu-->Aplicação: JSON Pedidos
+Aplicação-->Usuário consumidor de aplicação: Exibe pedidos do usuário
