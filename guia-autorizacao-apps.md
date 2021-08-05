@@ -108,7 +108,7 @@ https://minha-redirect-uri.dev?state=fj8o3n7bdy1op5
 
 Dessa forma, você deve receber os parâmetros presentes na URL de redirecionamento e utilizá-los para completar o fluxo.
 
-Com esses parâmetros em mãos, o `state` pode ser utilizado para implementação de proteção contra ataque de CSRF, conforme referenciado anteriormente, e o `session_state` é um identificador interno para identificar a sessão do usuário, que pode ser ignorado por hora. Por fim, o valor de `code` pode ser utilizado para resgatar um Access Token válido do usuário consumidor da aplicação, conforme descrito no passo 4.
+Dados os parâmetros, o `state` pode ser utilizado para implementação de proteção contra ataque de CSRF, conforme referenciado anteriormente, e o `session_state` é um identificador interno para identificar a sessão do usuário, que pode ser ignorado por hora. Por fim, o valor de `code` pode ser utilizado para resgatar um Access Token válido do usuário consumidor da aplicação, conforme descrito no passo 4.
 
 ### Passo 4
 
