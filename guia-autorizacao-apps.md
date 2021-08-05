@@ -68,7 +68,7 @@ Quando o usuário, consumidor da aplicação, precisar autorizar a aplicação n
   - No momento atual, é necessário passar somente o valor `openid`. Com ele, além dos scopes padrão, é possível utilizar o token gerado para consumo de toda a API disponibilizada. Entretanto, isso pode ser alterado conforme novas APIs forem sendo disponibilizadas.
   - Exemplo: `scope=openid`
 - `state`: é um parâmetro de segurança, que deve ser gerado aleatoriamente pela aplicação.
-  - Exemplo: `state=aleatoryxyz`
+  - Exemplo: `state=xyz`
   - Esse parâmetro é opcional, porém é citado como recomendado na especificação do OAuth2.
   - Mais informações podem ser consultadas na [seção 10.12 da RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-10.12).
 
