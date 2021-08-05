@@ -137,7 +137,7 @@ Onde:
 
 ### Tokens obtidos
 
-Após a requisição de troca de `code` por Access Token, é esperada uma resposta como essa:
+Após a requisição de troca de `code` por Access Token, é esperada uma resposta do seguinte formato:
 
 ```json
 {
