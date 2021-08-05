@@ -9,7 +9,7 @@ Seguiu-se a [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), que descr
 
 ## Glossário
 
-- **IDP**: provedor de identidade (Identity Provider), responsável por autenticar o usuário e fornecer um token de autenticação ao fornecedor de serviços.
+- **IDP**: provedor de identidade (Identity Provider), responsável por controlar os fluxos de autenticação e autorização de usuários e aplicações.
 - **Access Token**: token de acesso, é o resultado do fluxo de OAuth2/OpenID e é o que deve ser utilizado para consumir a API.
 
 ## API Keys vs OAuth2/OpenID
