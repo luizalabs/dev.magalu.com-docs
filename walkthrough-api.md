@@ -1,12 +1,5 @@
-Walkthrough API Marketplace Magalu
-==================================
-                                             __
-                                            / /
-     ___  ___  __     __ _  ___  ___  ___  / /_ __    _______  __ _
-    / _ `/ _ \/ /    /  ' \/ _ `/ _ `/ _ `/ / // /   / __/ _ \/  ' \
-    \_,_/ ___/_/ () /_/_/_/\_,_/\_, /\_,_/_/\_,_/ () \__/\___/_/_/_/
-       / /                      /  /
-       ``                       ```
+# Walkthrough API Marketplace Magalu
+
 ## Disclaimer
 
 Atualmente a API do Marketplace da Magalu encontra-se em estado beta, com acesso restrito a alguns convidados que manifestaram interesse durante a chamada de interessados no TDC Connections, que ocorreu em Junho deste ano. A abertura da API publicamente acontecerá ainda este ano, e será amplamente divulgada.
@@ -43,7 +36,7 @@ os pedidos realizados por este consumidor; uma consulta de pedidos realizada
 por um usuário Vendedor retorna os pedidos que este vendedor recebeu, e que
 ele precisa confirmar, faturar e entregar.
 
-Todas os recursos da API são expostas pelo domínio api.magalu.com. A
+Todos os recursos da API são expostos pelo domínio api.magalu.com. A
 documentação e ferramentas para desenvolvedores, inclusive gerenciamento de
 tokens de acesso, residem em https://dev.magalu.com/ -- para se cadastrar basta
 ter uma conta Github. Esperamos você lá!
@@ -296,6 +289,250 @@ $ curl -H "X-API-Key: MYAPIKEY" \
 }
 ```
 
+# Consultando e cadastrando SKUs
+
+Para utilizar a API de catálogo, Adelpha, é necessário utilizar um tenant de tipo `{maganets|stenagam}.SELLER`. Tendo um desses, podemos checar os SKUs ligados ao seller dado no endpoint /skus:
+
+```bash
+$ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
+  https://alpha.api.magalu.com/adelpha/v1/skus?_limit=1 | jq ".[] | {sku, channels, identifier: .product.identifier}"
+{
+  "sku": "mySku0401",
+  "channels": [
+    {
+      "active": false,
+      "listing_id": null,
+      "name": "magazineluiza",
+      "price": {
+        "currency": "BRL",
+        "list_price": 90828251.32,
+        "value": 90820401.32
+      },
+      "promotionals": [],
+      "status": "OFFLINE",
+      "url": null
+    }
+  ],
+  "identifier": [
+    {
+      "type": "ean",
+      "value": "1234567804019"
+    },
+    {
+      "type": "isbn",
+      "value": "1234567804026"
+    },
+    {
+      "type": "ncm",
+      "value": "0401.61.30"
+    }
+  ]
+}
+```
+
+Como visto no exemplo acima, é possível paginar os resultados de /skus com os parâmetros `_limit` e `_offset`, e filtrá-los com qualquer um dos parâmetros `sku`, `title`, `ean`, `ncm`, `isbn`, `group_id`:
+```bash
+$ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
+  https://alpha.api.magalu.com/adelpha/v1/skus?isbn=1234567804026 | jq
+[
+  {
+    "channels": [
+      {
+        "active": false,
+        "listing_id": null,
+        "name": "magazineluiza",
+        "price": {
+          "currency": "BRL",
+          "list_price": 90828251.32,
+          "value": 90820401.32
+        },
+        "promotionals": [],
+        "status": "OFFLINE",
+        "url": null
+      }
+    ],
+    "product": {
+      "attributes": [
+        {
+          "type": "tsgtflqt0401",
+          "value": "iahhqgia0401"
+        },
+        {
+          "type": "pqkzngwp0401",
+          "value": "xrjavqpw0401"
+        }
+      ],
+      "brand": "wjNXwcMhlBFCPRlkrsib0401",
+      "created_at": "2021-07-30T20:46:24.209000",
+      "creator": "ff6c63f2-2379-43a1-aed3-870ba83c91b7",
+      "datasheet": [
+        {
+          "type": "ruaiqnxi0401",
+          "value": "mzbvtqbx0401"
+        },
+        {
+          "type": "nurhfiib0401",
+          "value": "urjwesrq0401"
+        }
+      ],
+      "description": "...",
+      "dimensions": {
+        "depth": 34,
+        "height": 808,
+        "weight": 31,
+        "width": 70
+      },
+      "group_id": "610187991d2bf3b979a67c40",
+      "identifier": [
+        {
+          "type": "ean",
+          "value": "1234567804019"
+        },
+        {
+          "type": "isbn",
+          "value": "1234567804026"
+        },
+        {
+          "type": "ncm",
+          "value": "0401.61.30"
+        }
+      ],
+      "media": {
+        "images": ["..."],
+        "videos": ["..."]
+      },
+      "origin": "imported",
+      "package": {
+        "depth": 64,
+        "height": 30,
+        "weight": 61,
+        "width": 80
+      },
+      "perishable": true,
+      "tags": [
+        "vixjxzyv0401",
+        "hmugeipj0401"
+      ],
+      "tax_replacement": false,
+      "title": "PnxwxKTJGv0401",
+      "updated_at": "2021-07-30T20:48:09.006000",
+      "updater": "ff6c63f2-2379-43a1-aed3-870ba83c91b7"
+    },
+    "sku": "mySku0401",
+    "stocks": [
+      {
+        "branch": "zbxqyoqx0401",
+        "delivery_time": 10401,
+        "name": "daoyfowu0401",
+        "quantity": 5404,
+        "reserved": 14,
+        "type": "on_supplier"
+      }
+    ]
+  }
+]
+```
+
+Para cadastrar um novo SKU, utilizamos também o endpoint /skus, onde é obrigatório informar:
+- o código do sku.
+- os dados do produto (título, outros identifiers, descrição, peso do pacote, etc).
+- os dados de estoque da oferta.
+- os canais onde se deseja publicar a oferta e os preços por canal.
+
+```bash
+$ curl -X POST https://alpha.api.magalu.com/adelpha/v1/skus\
+  -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
+  -H "accept: application/json" -H "content-type: application/json" \
+  -d '{
+    "sku": "012345678",
+    "stocks": [{
+    "quantity": 1234,
+    "branch": "ULA01",
+    "name": "Estoque X",
+    "type": "on_seller",
+    "reserved": 0,
+    "delivery_time": 144000
+  }],
+  "channels": [{
+    "name": "SuperApp",
+    "active": true,
+    "price": {
+    "value": 1234.99,
+    "list_price": 1300
+    }
+  }],
+  "product": {
+    "group_id": "5f6e2b8a9f91f47840b9bf49",
+    "identifier": [
+        {
+        "type": "ean",
+        "value": "841667100531"
+        },
+        {
+        "type": "isbn",
+        "value": "9788562063602"
+        },
+        {
+        "type": "ncm",
+        "value": "8517.61.30"
+        }
+    ],
+    "title": "Tablet Wi-Fi 4GB Tela 6",
+    "description": "Feito para os amantes da leitura com sua tela de 6 polegadas...",
+    "origin": "national",
+    "perishable": false,
+    "package": {
+        "height": 100,
+        "width": 80,
+        "depth": 90,
+        "weight": 150
+    },
+    "datasheet": [
+        {
+        "type": "Voltagem",
+        "value": "220"
+        },
+        {
+        "type": "Cor",
+        "value": "Branca"
+        }
+    ],
+    "tags": [
+        "my-tag-1",
+        "my-tag-2"
+    ],
+    "brand": "Samsung",
+    "media": {
+        "images": [
+        "https://mysite.domain/some-image.jpg"
+        ],
+        "videos": [
+        "https://youtube/some-video/"
+        ]
+    },
+    "dimensions": {
+        "height": 100,
+        "width": 80,
+        "depth": 90,
+        "weight": 150
+    },
+    "attributes": [
+      {
+        "type": "Portas USB",
+        "value": "2"
+      },
+      {
+        "type": "Wifi",
+        "value": "Sim"
+      }
+    ]
+  }
+}'
+```
+Com o campo `channels.active == true`, entende-se que o pedido criado pode ser listado como uma oferta ativa no canal indicado, fazendo com que, após passar por um período de avaliação de conteúdo, ele apareça no(s) site(s) dos canais informados.
+
+**Importante:** as requisições mostradas aqui usam API Key porque estão utilizando um tenant de tipo `stenagam.SELLER`, que contém dados de teste. Para utilizar a visão de dados do mundo real é necessário ter um token OAuth!
+
 # Tenants e Perspectivas
 
 Até aqui as requisições foram feitas assumindo que o usuário dono da API
@@ -346,56 +583,58 @@ $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami/tenants
 
 Utilizando o tenant certo, você está pronto para explorar outras partes da API. Para alterar a perspectiva (o "tenant") utilizada nas requisições feitas na API, basta adicionar o header `"X-Tenant-ID: MYTENANTID"`, onde `MYTENANTID` é um dos uuids obtidos no passo anterior. Por exemplo:
 
-    $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" https://api.magalu.com/maestro/v1/orders?_limit=1
-    [
-	  {
-	    "uuid": "efb77dcf-d83c-4935-81ac-7be5f37e6cdc",
-	    "number": "9014500879663847",
-	    "sales_channel": {
-	      "code": 53,
-	      "description": "ML-APP Android",
-	      "organization": {
-	        "uuid": "4da25f48-4193-45de-b4ed-9b8c93b7f987",
-	        "code": "magazine_luiza",
-	        "description": "Magazine Luiza"
-	      }
-	    },
-	    "customer": {
-	      "uuid": "001dc28a-fe4d-482c-a0ef-6c6cdc46f94a",
-	      "name": "Sofist Nome da Pessoa"
-	    },
-	    "payment": {
-	      "status": {
-	        "code": "processing"
-	      },
-	      "currency": "BRL"
-	    },
-	    "packages": [
-	      {
-	        "uuid": "e3ae3598-8034-4374-8eed-bdca8c31d5a0",
-	        "seller": {
-	          "code": "stenagam_sandbox",
-	          "description": "Stenagam Sandbox"
-	        },
-	        "amount": 198.99,
-	        "created_at": "2021-01-06T07:26:38.000Z",
-	        "updated_at": "2021-07-02T12:59:58.000Z"
-	      },
-	      {
-	        "uuid": "b90a950b-c95e-4b4c-be25-0eff5c764500",
-	        "seller": {
-	          "code": "stenagam_sandbox",
-	          "description": "Stenagam Sandbox"
-	        },
-	        "amount": 20.7,
-	        "created_at": "2021-01-06T07:26:38.000Z",
-	        "updated_at": "2021-07-02T12:59:58.000Z"
-	      }
-	    ],
-	    "created_at": "2021-01-06T07:26:38.000Z",
-	    "updated_at": "2021-01-06T07:54:30.000+0000"
-	  }
-	]
+```bash
+$ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" https://api.magalu.com/maestro/v1/orders?_limit=1
+[
+  {
+    "uuid": "efb77dcf-d83c-4935-81ac-7be5f37e6cdc",
+    "number": "9014500879663847",
+    "sales_channel": {
+      "code": 53,
+      "description": "ML-APP Android",
+      "organization": {
+        "uuid": "4da25f48-4193-45de-b4ed-9b8c93b7f987",
+        "code": "magazine_luiza",
+        "description": "Magazine Luiza"
+      }
+    },
+    "customer": {
+      "uuid": "001dc28a-fe4d-482c-a0ef-6c6cdc46f94a",
+      "name": "Sofist Nome da Pessoa"
+    },
+    "payment": {
+      "status": {
+        "code": "processing"
+      },
+      "currency": "BRL"
+    },
+    "packages": [
+      {
+        "uuid": "e3ae3598-8034-4374-8eed-bdca8c31d5a0",
+        "seller": {
+          "code": "stenagam_sandbox",
+          "description": "Stenagam Sandbox"
+        },
+        "amount": 198.99,
+        "created_at": "2021-01-06T07:26:38.000Z",
+        "updated_at": "2021-07-02T12:59:58.000Z"
+      },
+      {
+        "uuid": "b90a950b-c95e-4b4c-be25-0eff5c764500",
+        "seller": {
+          "code": "stenagam_sandbox",
+          "description": "Stenagam Sandbox"
+        },
+        "amount": 20.7,
+        "created_at": "2021-01-06T07:26:38.000Z",
+        "updated_at": "2021-07-02T12:59:58.000Z"
+      }
+    ],
+    "created_at": "2021-01-06T07:26:38.000Z",
+    "updated_at": "2021-01-06T07:54:30.000+0000"
+  }
+]
+```
 
 Vale ressaltar que os únicos tenants que não permitimos com o uso de API Keys são os com `type` = `maganets.SELLER` :-)
 
@@ -429,7 +668,7 @@ a explorar a funcionalidade da API, lembrando que o ponto de partida é o portal
 em https://dev.magalu.com/ -- nos vemos lá!
 
 # Changelog
-
+- 2021-08-09: release do Adelpha
 - 2021-07-23: v4, alinhando o guia ao estado atual das APIs
     - Altera as rotas de /account e /maestro de acordo com o modelo de dados atual
     - Adiciona informações sobre tenants
