@@ -72,7 +72,7 @@ function Login() {
           <Button
             variant="contained"
             onClick={(event) =>
-              (window.location.href = `${process.env.REACT_APP_API_ENDPOINT_KEYCLOACK_AUTH}${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_ENDPOINT_HOME}&response_type=code&scope=customer_access openid`)
+              (window.location.href = `${process.env.REACT_APP_OIDC_AUTH_URI}?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_URI}&response_type=code&scope=customer_access openid`)
             }
           >
             Login

@@ -7,7 +7,7 @@ export const getOrders = () => {
   const decodedJWT = jwt_decode(jwt);
   var config = {
     method: "get",
-    url: process.env.REACT_APP_API_ENDPOINT_GET_ORDERS,
+    url: process.env.REACT_APP_OMS_API_URI,
     headers: {
       Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       "x-tenant-id": decodedJWT.customer.uuid,
@@ -28,7 +28,7 @@ export const getOrderByNumber = (number) => {
   const decodedJWT = jwt_decode(jwt);
   var config = {
     method: "get",
-    url: `${process.env.REACT_APP_API_ENDPOINT_GET_SPECIFIC_ORDER}${number}`,
+    url: `${process.env.REACT_APP_OMS_API_URI}?number=${number}`,
     headers: {
       Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       "x-tenant-id": decodedJWT.customer.uuid,

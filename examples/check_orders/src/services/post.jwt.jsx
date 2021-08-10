@@ -8,11 +8,11 @@ export const getJWT = (codeResponse) => {
     code: `${codeResponse}`,
     client_id: `${process.env.REACT_APP_CLIENT_ID}`,
     client_secret: `${process.env.REACT_APP_CLIENT_SECRET}`,
-    redirect_uri: `${process.env.REACT_APP_API_ENDPOINT_HOME}`,
+    redirect_uri: `${process.env.REACT_APP_URI}`,
   });
   var config = {
     method: "post",
-    url: `${process.env.REACT_APP_API_ENDPOINT_JWT}`,
+    url: `${process.env.REACT_APP_OIDC_TOKEN_URI}`,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
@@ -38,7 +38,7 @@ export const refreshJWT = () => {
   });
   var config = {
     method: "post",
-    url: `${process.env.REACT_APP_API_ENDPOINT_JWT}`,
+    url: `${process.env.REACT_APP_OIDC_TOKEN_URI}`,
     headers: {
       Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       "Content-Type": "application/x-www-form-urlencoded",

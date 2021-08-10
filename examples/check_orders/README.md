@@ -26,12 +26,12 @@ Clone o projeto:
 
 ```sh
 cd demorders
-git clone git@gitlab.luizalabs.com:wesley.bonini/appdemo.git
+git clone https://github.com/luizalabs/dev.magalu.com-docs.git
 ```
 
 Instale as dependências:
 ```sh
-cd app-demo
+cd dev.magalu.com-docs/examples/check_orders
 npm i
 ```
 Crie um arquivo .env com base no arquivo .env.example
