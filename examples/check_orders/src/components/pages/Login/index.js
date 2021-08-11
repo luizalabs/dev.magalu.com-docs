@@ -18,17 +18,13 @@ function Login() {
 
   useEffect(() => {
     const findJWT = async () => {
-      try {
-        setLoading(false);
-        await getJWT(codeResponse).catch(error => {
-          console.log(error);
-          history.push("/error");
-        });
-        setJwtReady("Done"); 
-        setLoading(true);
-      } catch (err) {
-        console.log(err);
-      }
+      setLoading(false);
+      await getJWT(codeResponse).catch((error) => {
+        console.log(error);
+        history.push("/error");
+      });
+      setJwtReady("Done");
+      setLoading(true);
     };
 
     //  Checa se o code ja foi fornecido, pede o JWT, confere a auth transfere para a página correta

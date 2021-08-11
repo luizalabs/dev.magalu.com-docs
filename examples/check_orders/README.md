@@ -12,9 +12,10 @@ Este aplicativo tem a função de servir como exemplo de consumo de APIs de pedi
 ## Tecnologias
 
 Para que o DemOrders funcione corretamente, você irá precisar das seguintes tecnologias:
-- [ReactJS] - HTML enhanced for web apps!
-- [node.js] - evented I/O for the backend
-- [GIT] - version control system!
+- [ReactJS] - Biblioteca Js para web apps!
+- [node.js] - Interpretador de Javascript
+- [GIT] - Sistema de versionamento!
+- [Create-React-App] - Maneira simples de iniciar apps em React!
 
 Este projeto é Open Source com um repositório público.
 
@@ -54,3 +55,4 @@ http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
    [node.js]: <http://nodejs.org>
    [ReactJS]: <https://reactjs.org/>
    [GIT]: <https://git-scm.com/>
+   [Create-React-App]: <https://create-react-app.dev/>

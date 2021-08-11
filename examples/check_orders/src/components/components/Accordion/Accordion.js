@@ -17,12 +17,12 @@ const Accordion = ({ data }) => {
     return count;
   };
 
-  const somaCompras = (packages) => {
-    var somaCompra = 0;
+  const sumItens = (packages) => {
+    var summedItens = 0;
     packages.forEach((pack) => {
-      somaCompra = somaCompra + pack.amount;
+      summedItens = summedItens + pack.amount;
     });
-    return somaCompra;
+    return summedItens;
   };
 
   const formatDate = (dateString) => {
@@ -49,7 +49,7 @@ const Accordion = ({ data }) => {
               <div className="order-info">
                 <p>Pedido: {tab.number}</p>
                 <p>Nº de itens: {totalItens(tab.packages)}</p>
-                <p>Valor do Pedido: R$ {somaCompras(tab.packages)}</p>
+                <p>Valor do Pedido: R$ {sumItens(tab.packages)}</p>
                 <p>Status: {tab.payment.status.code}</p>
               </div>
             </div>
