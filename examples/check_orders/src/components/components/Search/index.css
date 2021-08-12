@@ -1,0 +1,42 @@
+.client-order {
+    background-color: #fafafa;
+    text-align: center;
+    font-family: Montserrat;
+    font-style: normal;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+  }
+  
+  .order-title {
+    margin-left: auto;
+    margin-right: auto; 
+  }
+  
+  .Container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .searchContainer {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 3%;
+    margin-bottom: 4%;
+  }
+  
+  .searchIcon {
+   align-self: flex-end;
+   margin-bottom: 5px;
+  }
+  
+  .searchInput {
+    width: 200px;
+    margin: 5px;
+  }
+  

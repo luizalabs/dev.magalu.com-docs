@@ -1,0 +1,28 @@
+.client-order {
+  background-color: #fafafa;
+  background-image: url("../../../assets/logo500.png");
+  background-size:auto;
+  background-repeat: no-repeat;
+  position: fixed;
+  background-position:29vw 60vw;
+  text-align: center;
+  font-family: Montserrat;
+  font-style: normal;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.order-title {
+  margin-left: auto;
+  margin-right: auto; 
+}
+
+
+
+
+

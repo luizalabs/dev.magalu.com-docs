@@ -1,0 +1,14 @@
+.error {
+    margin-right: 2%;
+    margin-top: 1%;
+    color: red;
+}
+
+.button-pos-error {
+    margin-top: -5%;
+}
+
+.error-message {
+    margin-top: 5%;
+    margin-bottom: -2%;
+}
