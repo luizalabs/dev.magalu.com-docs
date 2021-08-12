@@ -295,7 +295,7 @@ Para utilizar a API de catálogo, Adelpha, é necessário utilizar um tenant de 
 
 ```bash
 $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
-  https://alpha.api.magalu.com/adelpha/v1/skus?_limit=1 | jq ".[] | {sku, channels, identifier: .product.identifier}"
+  https://api.magalu.com/adelpha/v1/skus?_limit=1 | jq ".[] | {sku, channels, identifier: .product.identifier}"
 {
   "sku": "mySku0401",
   "channels": [
@@ -333,7 +333,7 @@ $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c5
 Como visto no exemplo acima, é possível paginar os resultados de /skus com os parâmetros `_limit` e `_offset`, e filtrá-los com qualquer um dos parâmetros `sku`, `title`, `ean`, `ncm`, `isbn`, `group_id`:
 ```bash
 $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
-  https://alpha.api.magalu.com/adelpha/v1/skus?isbn=1234567804026 | jq
+  https://api.magalu.com/adelpha/v1/skus?isbn=1234567804026 | jq
 [
   {
     "channels": [
@@ -434,13 +434,13 @@ $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c5
 ```
 
 Para cadastrar um novo SKU, utilizamos também o endpoint /skus, onde é obrigatório informar:
-- o código do sku.
-- os dados do produto (título, outros identifiers, descrição, peso do pacote, etc).
-- os dados de estoque da oferta.
+- o código do sku;
+- os dados do produto (título, outros identifiers, descrição, peso do pacote, etc);
+- os dados de estoque da oferta;
 - os canais onde se deseja publicar a oferta e os preços por canal.
 
 ```bash
-$ curl -X POST https://alpha.api.magalu.com/adelpha/v1/skus\
+$ curl -X POST https://api.magalu.com/adelpha/v1/skus\
   -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
   -H "accept: application/json" -H "content-type: application/json" \
   -d '{
@@ -529,9 +529,9 @@ $ curl -X POST https://alpha.api.magalu.com/adelpha/v1/skus\
   }
 }'
 ```
-Com o campo `channels.active == true`, entende-se que o pedido criado pode ser listado como uma oferta ativa no canal indicado, fazendo com que, após passar por um período de avaliação de conteúdo, ele apareça no(s) site(s) dos canais informados.
+Com o campo `channels.active` tendo o valor `true`, entende-se que o pedido criado pode ser listado como uma oferta ativa no canal indicado. Dessa forma, após passar por um período de avaliação de conteúdo, o produto aparecerá no(s) site(s) dos canais informados.
 
-**Importante:** as requisições mostradas aqui usam API Key porque estão utilizando um tenant de tipo `stenagam.SELLER`, que contém dados de teste. Para utilizar a visão de dados do mundo real é necessário ter um token OAuth!
+**Importante:** as requisições mostradas aqui usam API Key porque estão utilizando um tenant de tipo `stenagam.SELLER`, que contém dados de teste. Para utilizar a visão de dados do mundo real é necessário ter um token de acesso proveniente do fluxo de OAuth 2.0, que é melhor explicado no [Guia de autorização de aplicações](https://github.com/luizalabs/dev.magalu.com-docs/blob/main/guia-autorizacao-apps.md).
 
 # Tenants e Perspectivas
 
@@ -668,7 +668,8 @@ a explorar a funcionalidade da API, lembrando que o ponto de partida é o portal
 em https://dev.magalu.com/ -- nos vemos lá!
 
 # Changelog
-- 2021-08-09: release do Adelpha
+- 2021-08-09:
+    - Adiciona /adelpha ao guia
 - 2021-07-23: v4, alinhando o guia ao estado atual das APIs
     - Altera as rotas de /account e /maestro de acordo com o modelo de dados atual
     - Adiciona informações sobre tenants
