@@ -33,7 +33,7 @@ As API Keys foram criadas, dentro da plataforma Magalu, com o objetivo de facili
 | Logout de usuário            | https://id.magalu.com/oauth/logout     |
 | Certificados para validações | https://id.magalu.com/oauth/certs      |
 
-![](./static/images/application_flow_by_user.png)
+![](https://github.com/luizalabs/dev.magalu.com-docs/blob/main/static/images/application_flow_by_user.png)
 
 Mais informações sobre os endpoints citados podem ser consultadas na especificação (OpenAPI) do provedor de identidade, que estará disponível em breve.
 
