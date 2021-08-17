@@ -433,7 +433,7 @@ $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c5
 ]
 ```
 
-Para cadastrar um novo SKU, utilizamos também o endpoint /skus, onde é obrigatório informar:
+Para cadastrar um novo SKU, utilizamos também o endpoint `/adelpha/v1/skus`, onde é obrigatório informar:
 - o código do sku;
 - os dados do produto (título, outros "identifiers", descrição, peso do pacote, etc);
 - os dados de estoque da oferta;
