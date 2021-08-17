@@ -291,7 +291,7 @@ $ curl -H "X-API-Key: MYAPIKEY" \
 
 # Consultando e cadastrando SKUs
 
-Para utilizar a API de catálogo, Adelpha, é necessário utilizar um tenant de tipo `{maganets|stenagam}.SELLER`. Tendo um desses, podemos checar os SKUs ligados ao seller dado no endpoint /skus:
+Para utilizar a API de catálogo, chamada de Adelpha, é necessário utilizar um tenant de tipo `{maganets|stenagam}.SELLER`. Tendo um desses, podemos checar os SKUs ligados ao seller dado no endpoint `/skus` do namespace `/adelpha/v1`:
 
 ```bash
 $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
