@@ -330,7 +330,7 @@ $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c5
 }
 ```
 
-Como visto no exemplo acima, é possível paginar os resultados de /skus com os parâmetros `_limit` e `_offset`, e filtrá-los com qualquer um dos parâmetros `sku`, `title`, `ean`, `ncm`, `isbn`, `group_id`:
+Como visto no exemplo acima, é possível paginar os SKUs com os parâmetros `_limit` e `_offset`, e filtrá-los com qualquer um dos parâmetros `sku`, `title`, `ean`, `ncm`, `isbn`, `group_id`:
 ```bash
 $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
   https://api.magalu.com/adelpha/v1/skus?isbn=1234567804026 | jq
