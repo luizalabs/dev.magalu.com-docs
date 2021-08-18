@@ -2,9 +2,9 @@
 
 ## Disclaimer
 
-Atualmente a API do Marketplace da Magalu encontra-se em estado beta, com acesso restrito a alguns convidados que manifestaram interesse durante a chamada de interessados no TDC Connections, que ocorreu em Junho deste ano. A abertura da API publicamente acontecerá ainda este ano, e será amplamente divulgada.
+Atualmente a API do Marketplace da Magalu encontra-se em estado beta, com acesso restrito a alguns convidados que manifestaram interesse através do https://dev.magalu.com/. A abertura da API publicamente acontecerá ainda este ano, e será amplamente divulgada.
 
-Para este momento, considere que as URLs referenciadas no texto possuem, atualmente, um prefixo alpha. Dessa forma, https://dev.magalu.com/ referencia https://alpha.dev.magalu.com/ e https://api.magalu.com/ referencia https://alpha.api.magalu.com/.
+Para este momento, as URLs da API e do Developer Portal agora estão referenciadas no texto, respectivamente, como https://alpha.api.magalu.com/ e https://alpha.dev.magalu.com/. Espera-se, que assim que a API for aberta publicamente, esses sistemas passem a residir nos domínios https://api.magalu.com/ e https://dev.magalu.com/.
 
 
 # Introdução
@@ -38,13 +38,13 @@ ele precisa confirmar, faturar e entregar.
 
 Todos os recursos da API são expostos pelo domínio api.magalu.com. A
 documentação e ferramentas para desenvolvedores, inclusive gerenciamento de
-tokens de acesso, residem em https://dev.magalu.com/ -- para se cadastrar basta
+tokens de acesso, residem em https://alpha.dev.magalu.com -- para se cadastrar basta
 ter uma conta Github. Esperamos você lá!
 
 # Autenticação e Autorização
 
 A forma mais simples de acessar a API Magalu é usando um API Key,
-que pode ser gerada em https://dev.magalu.com/user. Neste documento, onde
+que pode ser gerada em https://alpha.dev.magalu.com/user. Neste documento, onde
 aparecer `MYAPIKEY` deve ser feita a substituição pela chave gerada.
 
 > Observação: este documento contém exemplos que assumem que você tenha as
@@ -55,7 +55,7 @@ aparecer `MYAPIKEY` deve ser feita a substituição pela chave gerada.
 Para testar se sua API Key está funcionando, use o seguinte endpoint:
 
 ```bash
-$ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami
+$ curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/account/v1/whoami
 {
         "uuid": "5b02cdaf-9a93-4cfe-959a-ec989bd414e5",
         "preferred_email": "joe@corp.example.edu",
@@ -85,7 +85,7 @@ fluxo de autorização padrão OAuth 2.0. Chamadas OAuth 2.0 usam um token de
 acesso no cabeçalho Authorization, conforme indicado abaixo:
 
 ```bash
-$ curl -H "Authorization: Bearer MYTOKEN" https://api.magalu.com/account/v1/whoami
+$ curl -H "Authorization: Bearer MYTOKEN" https://alpha.api.magalu.com/account/v1/whoami
 [...]
 ```
 
@@ -95,7 +95,7 @@ Com sua API Key em mãos, você pode já consultar a API e descobrir quais
 foram as últimas compras que você fez no Magalu e no Netshoes:
 
 ```bash
-$ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/maestro/v1/orders | \
+$ curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/maestro/v1/orders | \
     jq ".[] | {uuid, number, created_at, channel: .sales_channel.organization.code}"
 [
     {
@@ -122,7 +122,7 @@ o Vendedor (o dono do estoque) do produto:
 
 ```bash
 $ curl -H "X-API-Key: MYAPIKEY" \
-    https://api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+    https://alpha.api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
 [
     {
         "uuid": "13bdb3e3-8fad-4f9b-a6c3-2fa99786289f",
@@ -178,7 +178,7 @@ relevante:
 
 ```bash
 $ curl -H "X-API-Key: MYAPIKEY" \
-  https://api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f/packages/72653741-4b3a-4327-9f13-03e4ffd2cb31
+  https://alpha.api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f/packages/72653741-4b3a-4327-9f13-03e4ffd2cb31
 
 {
     "uuid": "72653741-4b3a-4327-9f13-03e4ffd2cb31",
@@ -295,7 +295,7 @@ Para utilizar a API de catálogo, chamada de Adelpha, é necessário utilizar um
 
 ```bash
 $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
-  https://api.magalu.com/adelpha/v1/skus?_limit=1 | jq ".[] | {sku, channels, identifier: .product.identifier}"
+  https://alpha.api.magalu.com/adelpha/v1/skus?_limit=1 | jq ".[] | {sku, channels, identifier: .product.identifier}"
 {
   "sku": "mySku0401",
   "channels": [
@@ -333,7 +333,7 @@ $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c5
 Como visto no exemplo acima, é possível paginar os SKUs com os parâmetros `_limit` e `_offset`, e filtrá-los com qualquer um dos parâmetros `sku`, `title`, `ean`, `ncm`, `isbn`, `group_id`:
 ```bash
 $ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
-  https://api.magalu.com/adelpha/v1/skus?isbn=1234567804026 | jq
+  https://alpha.api.magalu.com/adelpha/v1/skus?isbn=1234567804026 | jq
 [
   {
     "channels": [
@@ -440,7 +440,7 @@ Para cadastrar um novo SKU, utilizamos também o endpoint `/adelpha/v1/skus`, on
 - os canais onde se deseja publicar a oferta e os preços por canal.
 
 ```bash
-$ curl -X POST https://api.magalu.com/adelpha/v1/skus\
+$ curl -X POST https://alpha.api.magalu.com/adelpha/v1/skus\
   -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
   -H "accept: application/json" -H "content-type: application/json" \
   -d '{
@@ -546,7 +546,7 @@ Type"). Tenants têm um tipo e um identificador únicos.
 Para visualizar quais tenants você tem acesso:
 
 ```bash
-$ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami/tenants
+$ curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/account/v1/whoami/tenants
 [
     {
         "uuid": "c2715319-e56d-4594-8299-6b2c9ba6d51a",
@@ -584,7 +584,7 @@ $ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami/tenants
 Utilizando o tenant certo, você está pronto para explorar outras partes da API. Para alterar a perspectiva (o "tenant") utilizada nas requisições feitas na API, basta adicionar o header `"X-Tenant-ID: MYTENANTID"`, onde `MYTENANTID` é um dos uuids obtidos no passo anterior. Por exemplo:
 
 ```bash
-$ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" https://api.magalu.com/maestro/v1/orders?_limit=1
+$ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" https://alpha.api.magalu.com/maestro/v1/orders?_limit=1
 [
   {
     "uuid": "efb77dcf-d83c-4935-81ac-7be5f37e6cdc",
@@ -655,7 +655,7 @@ por esta perspectiva, antes de testar mudanças com dados de produção.
 
 Ah, faltou falar uma coisa :-) O processo de desenvolvimento da API Magalu é
 aberto, e convidamos todos os desenvolvedores interessados a participar do
-nosso Slack — basta se registrar em https://dev.magalu.com/teaser-form que
+nosso Slack — basta se registrar em https://alpha.dev.magalu.com/teaser-form que
 entramos em contato com um convite.
 
 Caso tenham alguma problema ou sugestão durante o uso do portal ou das APIs,
@@ -665,9 +665,11 @@ especiais.
 
 Obrigado! Esperamos que tenha ficado tudo claro o suficiente para você começar
 a explorar a funcionalidade da API, lembrando que o ponto de partida é o portal
-em https://dev.magalu.com/ -- nos vemos lá!
+em https://alpha.dev.magalu.com -- nos vemos lá!
 
 # Changelog
+- 2021-08-18:
+	- Adiciona prefixo `alpha` nos links da API e Developer Portal
 - 2021-08-09:
     - Adiciona /adelpha ao guia
 - 2021-07-23: v4, alinhando o guia ao estado atual das APIs
