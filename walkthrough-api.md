@@ -119,9 +119,6 @@ curl -H "Authorization: Bearer ${MYTOKEN}" https://alpha.api.magalu.com/account/
 
 </details>
 
-Os exemplos das requisições nos tópicos abaixo assumem que o usuário dono da API Key esteja associado como um consumidor da Magazine Luiza.
-Caso você não seja, será necessário o envio do parâmetro X-Tenant-ID com seu respectivo valor no header, da seguinte maneira `-H "X-Tenant-ID: ${MYTENANTID}"`.
-
 Para mais dúvidas verifique o tópico **Tenants e Perspectivas**.
 
 ## Consultando pedidos e pacotes
@@ -355,8 +352,9 @@ curl -H "X-API-Key: ${MYAPIKEY}" \
 Para utilizar a API de catálogo, chamada de Adelpha, é necessário utilizar um tenant de tipo `{maganets|stenagam}.SELLER`. Tendo um desses, podemos checar os SKUs ligados ao seller dado no endpoint `/skus` do namespace `/adelpha/v1`:
 
 ```bash
-curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" \
-  https://alpha.api.magalu.com/adelpha/v1/skus?_limit=1 | jq ".[] | {sku, channels, identifier: .product.identifier}"
+curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
+  https://alpha.api.magalu.com/adelpha/v1/skus?_limit=1 \
+  | jq ".[] | {sku, channels, identifier: .product.identifier}"
 ```
 
 <details>
@@ -402,7 +400,7 @@ curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" \
 Como visto no exemplo acima, é possível paginar os SKUs com os parâmetros `_limit` e `_offset`, e filtrá-los com qualquer um dos parâmetros `sku`, `title`, `ean`, `ncm`, `isbn`, `group_id`:
 
 ```bash
-curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" \
+curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
   https://alpha.api.magalu.com/adelpha/v1/skus?isbn=1234567804026 | jq
 ```
 
@@ -517,7 +515,7 @@ Para cadastrar um novo SKU, utilizamos também o endpoint `/adelpha/v1/skus`, on
 
 ```bash
 curl -X POST https://alpha.api.magalu.com/adelpha/v1/skus\
-  -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" \
+  -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
   -H "accept: application/json" -H "content-type: application/json" \
   -d
 ```
@@ -678,7 +676,8 @@ curl -H "X-API-Key: ${MYAPIKEY}" https://alpha.api.magalu.com/account/v1/whoami/
 Utilizando o tenant certo, você está pronto para explorar outras partes da API. Para alterar a perspectiva (o "tenant") utilizada nas requisições feitas na API, basta adicionar o header `"X-Tenant-ID: ${MYTENANTID}"`, onde `MYTENANTID` é um dos uuids obtidos no passo anterior. Por exemplo:
 
 ```bash
-curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" https://alpha.api.magalu.com/maestro/v1/orders?_limit=1
+curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \ 
+  https://alpha.api.magalu.com/maestro/v1/orders?_limit=1
 ```
 
 <details>
