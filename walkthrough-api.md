@@ -71,7 +71,7 @@ curl -H "X-API-Key: MYAPIKEY" https://api.magalu.com/account/v1/whoami
   "first name": "Joe",
   "last name": "User",
   "active_tenant": {
-    "uuid": "6e7563e8-e167-4bd6-b431-f4cfd82cb12e",
+    "uuid": "",
     "type": "maganets.CUSTOMER"
   },
   "created_at": "2020-12-22T16:08:51.000Z",
