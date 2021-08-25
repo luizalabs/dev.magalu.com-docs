@@ -42,16 +42,18 @@ ter uma conta **Github**.
 
 Esperamos você lá!
 
-## Autenticação e Autorização
-
-A forma mais simples de acessar a API Magalu é usando um API Key,
-que pode ser gerada em https://alpha.dev.magalu.com/dashboard. Neste documento, onde
-aparecer `MYAPIKEY` deve ser feita a substituição pela chave gerada.
-
 > Observação: este documento contém exemplos que assumem que você tenha as
 > ferramentas de linha de comando `curl` e `jq` instaladas, que em Linux estão
 > disponíveis como pacotes do sistema, e em outros sistemas operacionais, em
 > repositórios públicos.
+
+## Autenticação e Autorização
+
+A forma mais simples de acessar a API Magalu é usando uma API Key.
+Neste documento, onde aparecer `MYAPIKEY` deve ser feita a substituição pela chave gerada.
+
+> Uma API Key já está esperando por você no seu [Painel de Desenvolvedor](https://alpha.dev.magalu.com/dashboard).
+> Lá você poderá revogar a API Key existente e gerar uma nova a qualquer momento.
 
 Para testar se sua API Key está funcionando, use o seguinte endpoint:
 
