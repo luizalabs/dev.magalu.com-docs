@@ -39,7 +39,7 @@ ele precisa confirmar, faturar e entregar.
 
 Todos os recursos da API são expostos pelo domínio api.magalu.com. A
 documentação e ferramentas para desenvolvedores, inclusive gerenciamento de
-tokens de acesso, residem em https://dev.magalu.com/ e para se cadastrar basta
+tokens de acesso, residem em https://dev.magalu.com. Para se cadastrar basta
 ter uma conta **Github**.
 
 Esperamos você lá!
