@@ -6,8 +6,6 @@ Atualmente a API do Marketplace da Magalu encontra-se em estado beta, com acesso
 
 Para este momento, as URLs da API e do Developer Portal agora estão referenciadas no texto, respectivamente, como https://alpha.api.magalu.com/ e https://alpha.dev.magalu.com/. Espera-se, que assim que a API for aberta publicamente, esses sistemas passem a residir nos domínios https://api.magalu.com/ e https://dev.magalu.com/.
 
-> Dessa forma, https://dev.magalu.com/ referencia https://alpha.dev.magalu.com/ e https://api.magalu.com/ referencia https://alpha.api.magalu.com/.
-
 ## Introdução
 
 A API do Marketplace da Magalu oferece acesso programático a uma variedade de
@@ -58,7 +56,7 @@ aparecer `MYAPIKEY` deve ser feita a substituição pela chave gerada.
 Para testar se sua API Key está funcionando, use o seguinte endpoint:
 
 ```bash
-curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/account/v1/whoami
+curl -H "X-API-Key: ${MYAPIKEY}" https://alpha.api.magalu.com/account/v1/whoami
 ```
 
 <details>
@@ -72,7 +70,7 @@ curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/account/v1/whoami
   "last name": "User",
   "active_tenant": {
     "uuid": "",
-    "type": "maganets.CUSTOMER"
+    "type": ""
   },
   "created_at": "2020-12-22T16:08:51.000Z",
   "updated_at": "2021-02-14T01:14:25.000Z",
@@ -97,7 +95,7 @@ Para acesso completo ao ambiente de produção API Magalu, você deve utilizar o
 Chamadas OAuth 2.0 usam um token de acesso no cabeçalho Authorization, conforme indicado abaixo:
 
 ```bash
-curl -H "Authorization: Bearer MYTOKEN" https://alpha.api.magalu.com/account/v1/whoami
+curl -H "Authorization: Bearer ${MYTOKEN}" https://alpha.api.magalu.com/account/v1/whoami
 ```
 
 <details>
@@ -110,8 +108,8 @@ curl -H "Authorization: Bearer MYTOKEN" https://alpha.api.magalu.com/account/v1/
   "first name": "Joe",
   "last name": "User",
   "active_tenant": {
-    "uuid": "6e7563e8-e167-4bd6-b431-f4cfd82cb12e",
-    "type": "maganets.CUSTOMER"
+    "uuid": "",
+    "type": ""
   },
   "created_at": "2020-12-22T16:08:51.000Z",
   "updated_at": "2021-02-14T01:14:25.000Z",
@@ -122,7 +120,7 @@ curl -H "Authorization: Bearer MYTOKEN" https://alpha.api.magalu.com/account/v1/
 </details>
 
 Os exemplos das requisições nos tópicos abaixo assumem que o usuário dono da API Key esteja associado como um consumidor da Magazine Luiza.
-Caso você não seja, será necessário o envio do parâmetro X-Tenant-ID com seu respectivo valor no header, da seguinte maneira `-H "X-Tenant-ID: MYTENANTID"`.
+Caso você não seja, será necessário o envio do parâmetro X-Tenant-ID com seu respectivo valor no header, da seguinte maneira `-H "X-Tenant-ID: ${MYTENANTID}"`.
 
 Para mais dúvidas verifique o tópico **Tenants e Perspectivas**.
 
@@ -132,7 +130,7 @@ Com sua API Key em mãos, você pode já consultar a API e descobrir quais
 foram as últimas compras que você fez no Magalu e no Netshoes:
 
 ```bash
-curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/maestro/v1/orders | \
+curl -H "X-API-Key: ${MYAPIKEY}" https://alpha.api.magalu.com/maestro/v1/orders | \
     jq ".[] | {uuid, number, created_at, channel: .sales_channel.organization.code}"
 ```
 
@@ -163,11 +161,13 @@ faça uma compra no Magalu ou no Netshoes e faça novamente a chamada. :-)
 
 A entidade que registra uma compra e seus produtos, **Order**, possui um ou
 mais pacotes, representando a forma como a compra é dividida conforme o local e
-o Vendedor (o dono do estoque) do produto:
+o Vendedor (o dono do estoque) do produto.
+
+De posse do ID de um pedido (**<ORDER_ID>**) e do ID de um pacote (**<PACKAGE_ID>**), é possivel listar os detalhes dos itens de um pacote.
 
 ```bash
-curl -H "X-API-Key: MYAPIKEY" \
-    https://alpha.api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+curl -H "X-API-Key: ${MYAPIKEY}" \
+    https://alpha.api.magalu.com/maestro/v1/orders/${ORDER_ID}
 ```
 
 <details>
@@ -227,12 +227,12 @@ curl -H "X-API-Key: MYAPIKEY" \
 
 </details>
 
-Para ver os itens de um pacote, consulte o endpoint /packages passando o UUID
+Para ver os itens de um pacote, consulte o endpoint `/packages` passando o UUID
 relevante:
 
 ```bash
-curl -H "X-API-Key: MYAPIKEY" \
-  https://alpha.api.magalu.com/maestro/v1/orders/13bdb3e3-8fad-4f9b-a6c3-2fa99786289f/packages/72653741-4b3a-4327-9f13-03e4ffd2cb31
+curl -H "X-API-Key: ${MYAPIKEY}" \
+  https://alpha.api.magalu.com/maestro/v1/orders/${ORDER_ID}/packages/${PACKAGE_ID}
 
 ```
 
@@ -355,7 +355,7 @@ curl -H "X-API-Key: MYAPIKEY" \
 Para utilizar a API de catálogo, chamada de Adelpha, é necessário utilizar um tenant de tipo `{maganets|stenagam}.SELLER`. Tendo um desses, podemos checar os SKUs ligados ao seller dado no endpoint `/skus` do namespace `/adelpha/v1`:
 
 ```bash
-curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
+curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" \
   https://alpha.api.magalu.com/adelpha/v1/skus?_limit=1 | jq ".[] | {sku, channels, identifier: .product.identifier}"
 ```
 
@@ -402,7 +402,7 @@ curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583
 Como visto no exemplo acima, é possível paginar os SKUs com os parâmetros `_limit` e `_offset`, e filtrá-los com qualquer um dos parâmetros `sku`, `title`, `ean`, `ncm`, `isbn`, `group_id`:
 
 ```bash
-curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
+curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" \
   https://alpha.api.magalu.com/adelpha/v1/skus?isbn=1234567804026 | jq
 ```
 
@@ -517,7 +517,7 @@ Para cadastrar um novo SKU, utilizamos também o endpoint `/adelpha/v1/skus`, on
 
 ```bash
 curl -X POST https://alpha.api.magalu.com/adelpha/v1/skus\
-  -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
+  -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" \
   -H "accept: application/json" -H "content-type: application/json" \
   -d
 ```
@@ -632,7 +632,7 @@ Type"). Tenants têm um tipo e um identificador únicos.
 Para visualizar quais tenants você tem acesso:
 
 ```bash
-curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/account/v1/whoami/tenants
+curl -H "X-API-Key: ${MYAPIKEY}" https://alpha.api.magalu.com/account/v1/whoami/tenants
 ```
 
 <details>
@@ -675,10 +675,10 @@ curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/account/v1/whoami/ten
 
 </details>
 
-Utilizando o tenant certo, você está pronto para explorar outras partes da API. Para alterar a perspectiva (o "tenant") utilizada nas requisições feitas na API, basta adicionar o header `"X-Tenant-ID: MYTENANTID"`, onde `MYTENANTID` é um dos uuids obtidos no passo anterior. Por exemplo:
+Utilizando o tenant certo, você está pronto para explorar outras partes da API. Para alterar a perspectiva (o "tenant") utilizada nas requisições feitas na API, basta adicionar o header `"X-Tenant-ID: ${MYTENANTID}"`, onde `MYTENANTID` é um dos uuids obtidos no passo anterior. Por exemplo:
 
 ```bash
-curl -H "X-API-Key: MYAPIKEY" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" https://alpha.api.magalu.com/maestro/v1/orders?_limit=1
+curl -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: ${MYTENANTID}" https://alpha.api.magalu.com/maestro/v1/orders?_limit=1
 ```
 
 <details>
