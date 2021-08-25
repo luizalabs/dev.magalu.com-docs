@@ -24,7 +24,7 @@ API você pode:
 - Atender e responder a chamados abertos sobre suas vendas e os produtos
   vendidos
 
-- Consultar e cadastrar SKUs (Stock keeping unit) do seu estoque, utilizando como base produtos do
+- Consultar e cadastrar SKUs (Stock Keeping Units) do seu estoque, utilizando como base produtos do
   nosso catálogo central
 
 entre outras atividades no ecossistema Magalu.
