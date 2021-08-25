@@ -24,7 +24,7 @@ API você pode:
 - Atender e responder a chamados abertos sobre suas vendas e os produtos
   vendidos
 
-- Consultar e cadastrar SKUs (Stock keeping unit) do seu estoque, utilizando como base produtos do
+- Consultar e cadastrar SKUs (Stock Keeping Units) do seu estoque, utilizando como base produtos do
   nosso catálogo central
 
 entre outras atividades no ecossistema Magalu.
@@ -71,7 +71,7 @@ curl -H "X-API-Key: MYAPIKEY" https://alpha.api.magalu.com/account/v1/whoami
   "first name": "Joe",
   "last name": "User",
   "active_tenant": {
-    "uuid": "6e7563e8-e167-4bd6-b431-f4cfd82cb12e",
+    "uuid": "",
     "type": "maganets.CUSTOMER"
   },
   "created_at": "2020-12-22T16:08:51.000Z",
