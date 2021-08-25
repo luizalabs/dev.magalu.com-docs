@@ -122,7 +122,7 @@ curl -H "Authorization: Bearer MYTOKEN" https://api.magalu.com/account/v1/whoami
 </details>
 
 Os exemplos das requisições nos tópicos abaixo assumem que o usuário dono da API Key esteja associado como um consumidor da Magazine Luiza.
-Caso você não seja, será necessário o envio do parâmetro X-Tenant-ID com seu respectivo valor no header, da seguinte maneira `-H "X-Tenant-ID: MYTENANTID"`.
+Caso não esteja associado, será necessário o envio do parâmetro X-Tenant-ID com seu respectivo valor no header, da seguinte maneira `-H "X-Tenant-ID: MYTENANTID"`.
 
 Para mais dúvidas verifique o tópico **Tenants e Perspectivas**.
 
