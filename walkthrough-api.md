@@ -760,7 +760,7 @@ Ah, faltou falar uma coisa :-)
 
 O processo de desenvolvimento da API Magalu é
 aberto, e convidamos todos os desenvolvedores interessados a participar do
-nosso Slack — basta se registrar em https://alpha.dev.magalu.com/teaser-form que
+nosso Slack — basta se registrar em https://dev.magalu.com/teaser-form que
 entramos em contato com um convite.
 
 Caso tenha alguma problema ou sugestão durante o uso do portal ou das APIs,
