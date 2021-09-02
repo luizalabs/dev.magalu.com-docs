@@ -70,10 +70,7 @@ curl -H "X-API-Key: ${MYAPIKEY}" https://alpha.api.magalu.com/account/v1/whoami
   "preferred_email": "joe@corp.example.edu",
   "first name": "Joe",
   "last name": "User",
-  "active_tenant": {
-    "uuid": "",
-    "type": ""
-  },
+  "active_tenant": null,
   "created_at": "2020-12-22T16:08:51.000Z",
   "updated_at": "2021-02-14T01:14:25.000Z",
   "last_accessed_at": "2021-07-07T22:03:01Z"
@@ -109,10 +106,7 @@ curl -H "Authorization: Bearer ${MYTOKEN}" https://alpha.api.magalu.com/account/
   "preferred_email": "joe@corp.example.edu",
   "first name": "Joe",
   "last name": "User",
-  "active_tenant": {
-    "uuid": "",
-    "type": ""
-  },
+  "active_tenant": null,
   "created_at": "2020-12-22T16:08:51.000Z",
   "updated_at": "2021-02-14T01:14:25.000Z",
   "last_accessed_at": "2021-07-07T22:03:01Z"
