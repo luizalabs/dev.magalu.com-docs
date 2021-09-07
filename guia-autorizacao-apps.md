@@ -155,9 +155,9 @@ Após a requisição de troca de `code` por Access Token, é esperada uma respos
 
 Onde o `access_token` é o Access Token a ser utilizado pela aplicação, e pode ser de dois formatos, e `scope` tem os valores `default` do nosso provedor de identidade, somados aos pedidos pela aplicação.
 
-> Observação: os valores `default` de `scope` são, até o momento, `spi-tenants`, `seller_access` e `email`.
+> Observação: os "scopes" default são, até o momento, `spi-tenants`, e `email`.
 
-Estamos trabalhando no desenvolvimento de novos scopes, mas até o momento os pré-configurados como padrão, juntos ao `openid`, são suficientes para que qualquer parte da API seja utilizada.
+Estamos trabalhando no desenvolvimento de novos "scopes", e em breve cada parte da API precisará de um "scope" específico para ser utilizada, junto ao `openid`.
 
 Dessa forma, então o Access Token quando aberto conterá um payload com o seguinte formato:
 
