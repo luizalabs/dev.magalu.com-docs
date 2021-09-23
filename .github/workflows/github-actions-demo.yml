@@ -1,0 +1,37 @@
+name: GitHub Actions Open CP Doc
+on:
+  push:
+    branches:
+      - main
+      - master
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    env:
+      GILAB_TOKEN: ${{ secrets.GILAB_TOKEN }}
+      PATH_DESTINATION: dist
+      USER_GITLAB: ${{ secrets.USER_GITLAB }}
+      EMAIL_GITLAB: ${{ secrets.EMAIL_GITLAB }}
+      GITLAB_REPO: ${{ secrets.GITLAB_REPO }}
+
+    steps:
+      - uses: actions/checkout@v1
+      - run: git clone https://oauth2:$GILAB_TOKEN@gitlab.luizalabs.com/kaique.feng/${GITLAB_REPO}.git open-api-gitlab
+      - run: ls
+      - name: Create new release content
+        working-directory: open-api-gitlab
+        run: |
+          git fetch --all --tags
+          tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          commit_message=$(git log -n 1 --pretty=format:%s HEAD)
+          # Extracts name from tag. Example: For tag "0.2.6-cr.6", get "0.2.6-cr."
+          tag_name=($(echo "${tag}" | grep -Eo "^.+\."))
+
+          # Extracts last  tag character. Example: For tag "0.2.6-cr.6", get "6"
+          version=($(echo "${tag}" | grep -oE "[^.]+$"))
+
+          git config --global user.name ${USER_GITLAB}
+          git config --global user.email ${EMAIL_GITLAB}
+
+          git tag -a "${tag_name}$((${version} + 1))" -m "${GITHUB_ACTOR} - ${commit_message}"
+          git push -u origin ${tag_name}$(($version + 1))
