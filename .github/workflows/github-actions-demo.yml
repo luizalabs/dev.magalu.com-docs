@@ -5,7 +5,7 @@ on:
       - main
       - master
 jobs:
-  Explore-GitHub-Actions:
+  Open-New-Release-Gitlab:
     runs-on: ubuntu-latest
     env:
       GILAB_TOKEN: ${{ secrets.GILAB_TOKEN }}
@@ -17,7 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: git clone https://oauth2:$GILAB_TOKEN@gitlab.luizalabs.com/kaique.feng/${GITLAB_REPO}.git open-api-gitlab
-      - run: ls
       - name: Create new release content
         working-directory: open-api-gitlab
         run: |
