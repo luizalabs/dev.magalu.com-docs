@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - run: git clone https://oauth2:$GILAB_TOKEN@gitlab.luizalabs.com/kaique.feng/${GITLAB_REPO}.git open-api-gitlab
+      - run: git clone https://oauth2:$GILAB_TOKEN@gitlab.luizalabs.com/${GITLAB_REPO}.git open-api-gitlab
       - name: Create new release content
         working-directory: open-api-gitlab
         run: |
