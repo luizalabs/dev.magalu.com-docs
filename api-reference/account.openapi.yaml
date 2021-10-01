@@ -1,0 +1,279 @@
+info:
+    title: Maganets Account API
+    description: |
+        Cadastro genérico de usuários, organizações tenants e permissões
+    contact:
+        name: Magalu
+        url: github.com/luizalabs
+        email: suporte@dev.magalu.com
+    version: 0.0.1
+servers:
+    - url: https://alpha.api.magalu.com/account
+      description: Descrição do server
+components:
+    schemas:
+        WhoAmIResponseDto:
+            properties:
+                active_tenant:
+                    properties:
+                        id:
+                            maxLength: 255
+                            minLength: 1
+                            type: string
+                        type:
+                            maxLength: 255
+                            minLength: 1
+                            type: string
+                    type: object
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                first_name:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                last_accessed_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                last_name:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                preferred_email:
+                    maxLength: 64
+                    minLength: 1
+                    type: string
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                uuid:
+                    format: uuid
+                    type: string
+            required:
+                - uuid
+                - preferred_email
+                - first_name
+                - last_name
+                - active_tenant.id
+                - active_tenant.type
+                - created_at
+                - updated_at
+                - last_accessed_at
+            type: object
+        AccountResponseDto:
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                first_name:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                last_accessed_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                last_name:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                preferred_email:
+                    maxLength: 64
+                    minLength: 1
+                    type: string
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                uuid:
+                    format: uuid
+                    type: string
+            required:
+                - uuid
+                - preferred_email
+                - first_name
+                - last_name
+                - created_at
+                - updated_at
+                - last_accessed_at
+            type: object
+        OrganizationResponseDto:
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                uuid:
+                    format: uuid
+                    type: string
+                name:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                tenants:
+                    items:
+                        $ref: '#/components/schemas/OrganizationTenantResponseDto'
+                    type: array
+            required:
+                - uuid
+                - name
+                - created_at
+                - updated_at
+                - tenants
+            type: object
+        AccountTenantsResponseDto:
+            properties:
+                tenants:
+                    $ref: '#/components/schemas/TenantsResponseDto'
+            required:
+                - tenants
+            type: object
+        TenantResponseDto:
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                type:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                uuid:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+            required:
+                - uuid
+                - type
+                - created_at
+                - updated_at
+            type: object
+        OrganizationTenantResponseDto:
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                type:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                uuid:
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                active:
+                    description: Tenant status
+                    type: boolean
+            required:
+                - uuid
+                - type
+                - created_at
+                - updated_at
+            type: object
+        TenantsResponseDto:
+            items:
+                $ref: '#/components/schemas/TenantResponseDto'
+            type: array
+paths:
+    /v1/whoami:
+        get:
+            operationId: getWhoAmI
+            responses:
+                "401":
+                    description: Forbidden
+                "403":
+                    description: Unauthorized
+                "404":
+                    description: Account not found
+                default:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/WhoAmIResponseDto'
+                    description: The account data
+            summary: Get account
+    /v1/whoami/tenants:
+        get:
+            operationId: getAccountTenants
+            responses:
+                "401":
+                    description: Forbidden
+                "403":
+                    description: Unauthorized
+                "404":
+                    description: Account tenants not found
+                default:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountTenantsResponseDto'
+                    description: The account tenants data
+            summary: Get account tenants
+    /v1/accounts/{uuid}:
+        get:
+            parameters:
+                - in: path
+                  name: uuid
+                  schema:
+                      type: string
+                      format: uuid
+                  required: true
+                  description: UUID of the account to get
+            operationId: getAccount
+            responses:
+                "401":
+                    description: Forbidden
+                "403":
+                    description: Unauthorized
+                "404":
+                    description: Account not found
+                default:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountResponseDto'
+                    description: The account data
+            summary: Get account
+    /v1/organizations/{uuid}:
+        get:
+            parameters:
+                - in: path
+                  name: uuid
+                  schema:
+                      type: string
+                      format: uuid
+                  required: true
+                  description: UUID of the account to get
+            operationId: getOrganization
+            responses:
+                "401":
+                    description: Forbidden
+                "403":
+                    description: Unauthorized
+                "404":
+                    description: Organization not found
+                default:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OrganizationResponseDto'
+                    description: The organization data
+            summary: Get organization
+openapi: 3.0.2
