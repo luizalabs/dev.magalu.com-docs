@@ -1,0 +1,3202 @@
+info:
+    title: Maestro OMS
+    description: "Venda, pague e acompanhe pedidos feitos nos canais Magalu e Netshoes. \nDo momento da compra até a entrega final, a API Maestro te fornece toda\na informação necessária para processar pedidos e despachar produtos para todo o Brasil\n"
+    contact:
+        name: Magalu
+        url: github.com/luizalabs
+        email: suporte@dev.magalu.com
+    version: 0.0.1
+servers:
+    - url: https://alpha.api.magalu.com/maestro
+      description: Descrição do server
+components:
+    schemas:
+        AddressResponseDto:
+            properties:
+                city:
+                    description: City of the address
+                    example: Franca
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                complement:
+                    description: Complement of the address
+                    example: Apartamento 56
+                    maxLength: 100
+                    type: string
+                district:
+                    description: District of the address
+                    example: Centro
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                number:
+                    description: Number of the address
+                    example: 156A
+                    maxLength: 6
+                    minLength: 1
+                    type: string
+                reference:
+                    description: Reference of the address
+                    example: 'Perto do bar do zé '
+                    maxLength: 100
+                    type: string
+                state:
+                    description: State of the address
+                    example: SP
+                    maxLength: 2
+                    minLength: 2
+                    type: string
+                street:
+                    description: Street of the address
+                    example: Rua Coronel Antonio
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                zip_code:
+                    description: Zip Code of the address
+                    example: "123456789"
+                    maxLength: 9
+                    minLength: 9
+                    type: string
+            required:
+                - city
+                - district
+                - number
+                - state
+                - street
+                - zip_code
+            type: object
+        Bank account:
+            description: The Optional cancellation bank account
+            properties:
+                account:
+                    description: The account number
+                    type: string
+                account_type:
+                    description: The account type
+                    enum:
+                        - checking_account
+                        - saving_account
+                    type: string
+                agency:
+                    description: The agency number
+                    type: string
+                bankCode:
+                    description: The bank code
+                    type: string
+                customer_name:
+                    description: Customer Name
+                    type: string
+                digit:
+                    description: The account digit
+                    type: string
+                document_id:
+                    description: CNPJ number
+                    type: string
+            required:
+                - account
+                - account_type
+                - agency
+                - bankCode
+                - customer_name
+                - digit
+            type: object
+        BenefitResponseDto:
+            description: Products benefits only visible for customers
+            properties:
+                amount:
+                    description: Total value of the benefits
+                    example: "33.0"
+                    minLength: 1
+                    type: string
+                description:
+                    description: Description of the benefits
+                    example: R$33,00
+                    maxLength: 32
+                    minLength: 1
+                    type: string
+                type:
+                    description: Type of the benefits
+                    example: cashback
+                    maxLength: 32
+                    minLength: 1
+                    type: string
+            required:
+                - amount
+                - description
+                - type
+            type: object
+        BundleResponseDto:
+            description: Products bundles only visible for customers
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                product:
+                    $ref: '#/components/schemas/ProductResponseDto'
+                quantity:
+                    description: Quantity of an bundle item in the package
+                    example: 2
+                    format: int32
+                    minimum: 1
+                    type: integer
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of an bundle item in the package
+                    example: 8caa3d05-d801-4021-a1d9-b94d5306b091
+                    format: uuid
+                    type: string
+            required:
+                - created_at
+                - product
+                - quantity
+                - updated_at
+                - uuid
+            type: object
+        Customer:
+            description: The customer information
+            properties:
+                email:
+                    description: The customer email
+                    type: string
+                name:
+                    description: The customer name
+                    type: string
+                uuid:
+                    description: The customer UUID
+                    format: uuid
+                    type: string
+            type: object
+        CustomerResponseDto:
+            properties:
+                name:
+                    description: Name of the customer
+                    example: Joe User
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                uuid:
+                    description: Identifier of the customer
+                    example: 5b02cdaf-9a93-4cfe-959a-ec989bd414e5
+                    format: uuid
+                    type: string
+            required:
+                - name
+                - uuid
+            type: object
+        DeadlineDatesResponseDto:
+            properties:
+                max:
+                    description: Maximum expected date for delivery, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-27T15:36:19Z
+                    format: date-time
+                    type: string
+                min:
+                    description: Minimum expected date for delivery, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+            type: object
+        DeadlineResponseDto:
+            properties:
+                dates:
+                    $ref: '#/components/schemas/DeadlineDatesResponseDto'
+                period:
+                    description: Deadline period
+                    example: morning
+                    maxLength: 10
+                    type: string
+                precision:
+                    description: Deadline precision
+                    enum:
+                        - hours
+                        - days
+                        - minutes
+                    example: hours
+                    maxLength: 10
+                    type: string
+                values:
+                    $ref: '#/components/schemas/DeadlineValuesResponseDto'
+            required:
+                - values
+            type: object
+        DeadlineValuesResponseDto:
+            properties:
+                max:
+                    description: Maximum expected value for delivery
+                    example: 2
+                    format: int32
+                    minimum: 0
+                    type: integer
+                min:
+                    description: Minimum expected value for delivery
+                    example: 1
+                    format: int32
+                    minimum: 0
+                    type: integer
+            required:
+                - max
+                - min
+            type: object
+        ErrorDetailDto:
+            properties:
+                description:
+                    type: string
+                field:
+                    type: string
+                issue:
+                    type: string
+                location:
+                    type: string
+                value:
+                    type: string
+            type: object
+        ErrorDto:
+            properties:
+                details:
+                    items:
+                        $ref: '#/components/schemas/ErrorDetailDto'
+                    type: array
+                errorCode:
+                    type: string
+                links:
+                    items:
+                        $ref: '#/components/schemas/ErrorLinkDto'
+                    type: array
+                message:
+                    type: string
+            type: object
+        ErrorLinkDto:
+            properties:
+                href:
+                    type: string
+            type: object
+        ErrorResponseDetailsJson:
+            properties:
+                description:
+                    type: string
+                field:
+                    type: string
+                issue:
+                    type: string
+                location:
+                    type: string
+                value:
+                    type: string
+            type: object
+        ErrorResponseJson:
+            properties:
+                details:
+                    items:
+                        $ref: '#/components/schemas/ErrorResponseDetailsJson'
+                    type: array
+                error_code:
+                    type: string
+                links:
+                    items:
+                        $ref: '#/components/schemas/ErrorResponseLinksJson'
+                    type: array
+                    uniqueItems: true
+                message:
+                    type: string
+            type: object
+        ErrorResponseLinksJson:
+            properties:
+                href:
+                    type: string
+            type: object
+        EventRequestDto:
+            properties:
+                date:
+                    description: Datetime when the event actually happened, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                status:
+                    $ref: '#/components/schemas/EventStatusRequestDto'
+            required:
+                - date
+                - status
+            type: object
+        EventResponseDto:
+            properties:
+                created_at:
+                    description: Datetime the Order Manager received the event, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                current:
+                    description: Current event
+                    example: true
+                    type: boolean
+                date:
+                    description: Datetime when the event actually happened, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                status:
+                    $ref: '#/components/schemas/EventStatusResponseDto'
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of the event
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+            required:
+                - created_at
+                - current
+                - date
+                - updated_at
+                - uuid
+            type: object
+        EventStatusRequestDto:
+            properties:
+                id:
+                    description: Event status Identifier
+                    example: 7
+                    format: int32
+                    minimum: 1
+                    type: integer
+            required:
+                - id
+            type: object
+        EventStatusResponseDto:
+            properties:
+                customer:
+                    $ref: '#/components/schemas/StatusCustomerResponseDto'
+                description:
+                    description: Description status event
+                    example: Pedido Recebido
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                finisher:
+                    description: Finisher status event
+                    example: false
+                    type: boolean
+                id:
+                    description: Identifier status event
+                    example: 1
+                    format: int32
+                    minimum: 1
+                    type: integer
+            required:
+                - description
+                - finisher
+                - id
+            type: object
+        GiftResponseDto:
+            description: Products gifts only visible for customers
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                product:
+                    $ref: '#/components/schemas/ProductGiftResponseDto'
+                quantity:
+                    description: Quantity of an gift item in the package
+                    example: 2
+                    format: int32
+                    minimum: 1
+                    type: integer
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of an gift item in the package
+                    example: 8caa3d05-d801-4021-a1d9-b94d5306b091
+                    format: uuid
+                    type: string
+            required:
+                - created_at
+                - product
+                - quantity
+                - updated_at
+                - uuid
+            type: object
+        IdentificationResponseDto:
+            properties:
+                document:
+                    description: Document the person who will pick up at the store
+                    example: "12345678910"
+                    maxLength: 32
+                    minLength: 1
+                    type: string
+            required:
+                - document
+            type: object
+        InvoiceEmitterResponseDto:
+            properties:
+                cnpj:
+                    description: Cnpj emitter of the invoice
+                    example: "12345678910123"
+                    maxLength: 14
+                    minLength: 14
+                    type: string
+            required:
+                - cnpj
+            type: object
+        InvoiceResponseDto:
+            properties:
+                amount:
+                    description: Total value of the invoice
+                    example: "95.0"
+                    minLength: 1
+                    type: string
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                emitter:
+                    $ref: '#/components/schemas/InvoiceEmitterResponseDto'
+                issue_date:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                key:
+                    description: Key of the invoice
+                    example: "35100448900950089785550240008887791046448054"
+                    maxLength: 200
+                    minLength: 1
+                    type: string
+                number:
+                    description: Number of the invoice
+                    example: 123445
+                    format: int64
+                    minimum: 1
+                    type: integer
+                serie:
+                    description: Total value of the invoice
+                    example: "1"
+                    maxLength: 10
+                    minLength: 1
+                    type: string
+                status:
+                    $ref: '#/components/schemas/InvoiceStatusResponseDto'
+                type:
+                    $ref: '#/components/schemas/InvoiceTypeResponseDto'
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of the invoice
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+            required:
+                - created_at
+                - issue_date
+                - key
+                - number
+                - serie
+                - type
+                - updated_at
+                - uuid
+            type: object
+        InvoiceStatusResponseDto:
+            properties:
+                description:
+                    description: Description of the status invoice
+                    example: Nota fiscal autorizada online
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                id:
+                    description: Identifier of the status invoice
+                    example: 3
+                    format: int32
+                    minimum: 1
+                    type: integer
+            required:
+                - description
+                - id
+            type: object
+        InvoiceTypeResponseDto:
+            properties:
+                description:
+                    description: Description of the type invoice
+                    example: VENDA MERCADORIA  ADQUIR/RECEB TERCEIROS
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                id:
+                    description: Identifier of the type invoice
+                    example: 51
+                    format: int32
+                    minimum: 1
+                    type: integer
+            required:
+                - description
+                - id
+            type: object
+        Item:
+            description: The list of package items
+            properties:
+                product:
+                    $ref: '#/components/schemas/Product'
+                quantity:
+                    description: The item quantity
+                    format: int32
+                    type: integer
+                uuid:
+                    description: The item UUID
+                    format: uuid
+                    type: string
+            type: object
+        ItemRequest:
+            properties:
+                quantity:
+                    description: The item quantity
+                    format: int32
+                    type: integer
+                uuid:
+                    description: The item identification
+                    format: uuid
+                    type: string
+            required:
+                - quantity
+                - uuid
+            type: object
+        ItemResponseDto:
+            properties:
+                benefits:
+                    description: Products benefits only visible for customers
+                    items:
+                        $ref: '#/components/schemas/BenefitResponseDto'
+                    type: array
+                bundles:
+                    description: Products bundles only visible for customers
+                    items:
+                        $ref: '#/components/schemas/BundleResponseDto'
+                    type: array
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                gifts:
+                    description: Products gifts only visible for customers
+                    items:
+                        $ref: '#/components/schemas/GiftResponseDto'
+                    type: array
+                product:
+                    $ref: '#/components/schemas/ProductResponseDto'
+                quantity:
+                    description: Quantity of an item in the package
+                    example: 2
+                    format: int32
+                    minimum: 1
+                    type: integer
+                services:
+                    description: Products services only visible for customers
+                    items:
+                        $ref: '#/components/schemas/ServiceResponseDto'
+                    type: array
+                total:
+                    description: Total value of the package item with Freight ((Product + Interest + Freight - Discount) * Quantity)
+                    example: "64.0"
+                    minLength: 1
+                    type: string
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of an item in the package
+                    example: 8caa3d05-d801-4021-a1d9-b94d5306b091
+                    format: uuid
+                    type: string
+                value:
+                    description: Total value of the package item without Freight ((Product + Interest - Discount) * Quantity)
+                    example: "34.0"
+                    minLength: 1
+                    type: string
+            required:
+                - created_at
+                - product
+                - quantity
+                - total
+                - updated_at
+                - uuid
+                - value
+            type: object
+        LocalizationResponseDto:
+            properties:
+                latitude:
+                    description: Latitude of the Store
+                    example: -20.584946
+                    format: float
+                    type: number
+                longitude:
+                    description: Longitude of the Store
+                    example: -46.919163
+                    format: float
+                    type: number
+            required:
+                - latitude
+                - longitude
+            type: object
+        MessageRequest:
+            properties:
+                message:
+                    description: Message content
+                    maxLength: 255
+                    type: string
+                private:
+                    description: Field for exchanging exclusive messages between MAGALU and SELLER. Customers cannot send or view private messages.
+                    type: boolean
+            required:
+                - message
+                - private
+            type: object
+        MessageResponse:
+            properties:
+                created_at:
+                    description: The message creation date
+                    format: date-time
+                    type: string
+                created_by:
+                    description: The user who sent the message
+                    type: string
+                message:
+                    description: Message content
+                    type: string
+                private:
+                    description: Field for exchanging exclusive messages between MAGALU and SELLER. Customers cannot send or view private messages.
+                    type: boolean
+                role:
+                    description: The user type who sent the message
+                    type: string
+            type: object
+        MethodResponseDto:
+            properties:
+                code:
+                    description: Code of payment method
+                    enum:
+                        - account_balance
+                        - amex
+                        - aura
+                        - banesecard
+                        - bank_slip
+                        - banrisul_debit
+                        - bonus
+                        - carnet
+                        - carrefourcard
+                        - carta_credito
+                        - cash
+                        - check
+                        - conta_digital_magalu
+                        - credishop
+                        - diners
+                        - dinners
+                        - elo
+                        - hipercard
+                        - luizacard
+                        - luizacard_gold
+                        - magalu_card
+                        - marisa
+                        - mastercard
+                        - minha_casa_melhor_debit
+                        - on_time
+                        - paypal
+                        - pix
+                        - redeshop_debit
+                        - sodexo_debit
+                        - sorocred
+                        - vale_compra
+                        - virtual_debit_elo
+                        - visa
+                        - visa_debit
+                    example: magalu_card
+                    maxLength: 32
+                    type: string
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                description:
+                    description: Description of payment method
+                    example: Magalu Card
+                    maxLength: 32
+                    type: string
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of payment method
+                    example: c5cf487d-aaa0-4b41-86aa-376bb2108832
+                    format: uuid
+                    type: string
+            required:
+                - code
+                - created_at
+                - description
+                - updated_at
+                - uuid
+            type: object
+        OpeningHourResponseDto:
+            properties:
+                closing:
+                    description: We expect partial-time in ISO 8601 format of hh:mm:ss
+                    example: "18:30:00"
+                    format: partial-time
+                    type: string
+                opening:
+                    description: We expect partial-time in ISO 8601 format of hh:mm:ss
+                    example: "09:00:00"
+                    format: partial-time
+                    type: string
+                weekday:
+                    description: Weekday opening hour store
+                    enum:
+                        - MONDAY
+                        - TUESDAY
+                        - WEDNESDAY
+                        - THURSDAY
+                        - FRIDAY
+                        - SATURDAY
+                        - SUNDAY
+                    example: MONDAY
+                    type: string
+            required:
+                - closing
+                - opening
+                - weekday
+            type: object
+        Order:
+            description: The order information
+            properties:
+                number:
+                    description: The order number
+                    type: string
+                packages:
+                    description: The list of order packages
+                    items:
+                        $ref: '#/components/schemas/Package'
+                    type: array
+                uuid:
+                    description: The order UUID
+                    format: uuid
+                    type: string
+            type: object
+        OrderPackageResponseDto:
+            properties:
+                amount:
+                    description: Total package value, ((product + freight + interest - discount) * quantity) of all items
+                    example: "75.9"
+                    minLength: 1
+                    type: string
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                items:
+                    items:
+                        $ref: '#/components/schemas/ItemResponseDto'
+                    type: array
+                seller:
+                    $ref: '#/components/schemas/SellerResponseDto'
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of the package
+                    example: a6dce737-fe37-4444-8c51-a021d10051b7
+                    format: uuid
+                    type: string
+            required:
+                - created_at
+                - seller
+                - updated_at
+                - uuid
+            type: object
+        OrderResponseDto:
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                customer:
+                    $ref: '#/components/schemas/CustomerResponseDto'
+                number:
+                    description: Order number at checkout
+                    example: "8954650874610585"
+                    maxLength: 255
+                    minLength: 3
+                    type: string
+                packages:
+                    items:
+                        $ref: '#/components/schemas/OrderPackageResponseDto'
+                    type: array
+                payment:
+                    $ref: '#/components/schemas/PaymentResponseDto'
+                sales_channel:
+                    $ref: '#/components/schemas/SalesChannelResponseDto'
+                uuid:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+            required:
+                - created_at
+                - customer
+                - number
+                - packages
+                - sales_channel
+                - uuid
+            type: object
+        OrganizationResponseDto:
+            properties:
+                code:
+                    description: Code of the organization
+                    example: magazine_luiza
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                description:
+                    description: Description of the organization
+                    example: Magazine Luiza
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                uuid:
+                    description: Identifier of the organization
+                    example: 4da25f48-4193-45de-b4ed-9b8c93b7f987
+                    format: uuid
+                    type: string
+            required:
+                - code
+                - description
+                - uuid
+            type: object
+        Package:
+            description: The list of order packages
+            properties:
+                items:
+                    description: The list of package items
+                    items:
+                        $ref: '#/components/schemas/Item'
+                    type: array
+                seller:
+                    $ref: '#/components/schemas/Seller'
+                uuid:
+                    description: The package UUID
+                    format: uuid
+                    type: string
+            type: object
+        PaymentResponseDto:
+            properties:
+                currency:
+                    description: Type of payment currency
+                    example: BRL
+                    maxLength: 3
+                    minLength: 3
+                    type: string
+                methods:
+                    items:
+                        $ref: '#/components/schemas/MethodResponseDto'
+                    type: array
+                status:
+                    $ref: '#/components/schemas/PaymentStatusResponseDto'
+                uuid:
+                    description: Identifier of the payment
+                    example: 1809e932-1734-4a67-b938-8dc2acf650a7
+                    format: uuid
+                    type: string
+            required:
+                - currency
+                - methods
+                - status
+                - uuid
+            type: object
+        PaymentStatusResponseDto:
+            properties:
+                code:
+                    description: Code of the payment status
+                    enum:
+                        - authorized
+                        - canceled
+                        - canceled_by_divergent_data
+                        - divergent_data
+                        - in_risk_analysis
+                        - in_risk_reanalysis
+                        - not_paid
+                        - paid
+                        - partially_authorized
+                        - partially_paid
+                        - processing
+                        - refunded
+                        - refused
+                        - refused_by_fraud
+                        - waiting_payment
+                    example: paid
+                    maxLength: 36
+                    minLength: 1
+                    type: string
+            required:
+                - code
+            type: object
+        PhoneResponseDto:
+            properties:
+                area_Code:
+                    description: Area Code of the phone
+                    example: 99
+                    format: int32
+                    minimum: 1
+                    type: integer
+                number:
+                    description: Number of the phone
+                    example: 999999999
+                    format: int32
+                    minimum: 1
+                    type: integer
+                type:
+                    description: Type of the phone
+                    enum:
+                        - home
+                        - mobile
+                        - business
+                    example: moblie
+                    maxLength: 20
+                    minLength: 1
+                    type: string
+            required:
+                - area_Code
+                - number
+                - type
+            type: object
+        PickupRecipientResponseDto:
+            properties:
+                identification:
+                    $ref: '#/components/schemas/IdentificationResponseDto'
+                name:
+                    description: Name of the person who will pick up at the store
+                    example: Joe User
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+            required:
+                - identification
+                - name
+            type: object
+        PickupResponseDto:
+            description: Pickup only visible for customers
+            properties:
+                recipient:
+                    $ref: '#/components/schemas/PickupRecipientResponseDto'
+                store:
+                    $ref: '#/components/schemas/StoreResponseDto'
+                uuid:
+                    description: Identifier of the Pickup
+                    example: bc64e6e0-dc82-48c0-b7fb-466bfc820d32
+                    format: uuid
+                    type: string
+            required:
+                - recipient
+                - store
+                - uuid
+            type: object
+        Product:
+            description: The item product
+            properties:
+                code:
+                    description: The product code
+                    type: string
+                description:
+                    description: The product description
+                    type: string
+                reference:
+                    description: The product reference
+                    type: string
+                seller:
+                    $ref: '#/components/schemas/ProductSeller'
+            type: object
+        ProductCategoryResponseDto:
+            properties:
+                id:
+                    description: Category of the product
+                    example: EP
+                    maxLength: 32
+                    minLength: 1
+                    type: string
+                sub_category:
+                    $ref: '#/components/schemas/ProductSubCategoryResponseDto'
+            required:
+                - id
+            type: object
+        ProductFreightCostResponseDto:
+            properties:
+                customer:
+                    description: Unit freight of the Product paid for by the Customer
+                    example: "15.0"
+                    minLength: 1
+                    type: string
+            required:
+                - customer
+            type: object
+        ProductFreightResponseDto:
+            properties:
+                cost:
+                    $ref: '#/components/schemas/ProductFreightCostResponseDto'
+            required:
+                - cost
+            type: object
+        ProductGiftResponseDto:
+            properties:
+                brand:
+                    description: Brand of the product
+                    example: Britânia
+                    maxLength: 50
+                    minLength: 1
+                    type: string
+                code:
+                    description: Code of the product magalu
+                    example: "204434800"
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                description:
+                    description: Description of the product
+                    example: Cafeteira Elétrica Britânia CP30 Preta
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                reference:
+                    description: Reference of the product
+                    example: 30 Xícaras
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+            required:
+                - code
+            type: object
+        ProductResponseDto:
+            properties:
+                brand:
+                    description: Brand of the product
+                    example: Britânia
+                    maxLength: 50
+                    minLength: 1
+                    type: string
+                category:
+                    $ref: '#/components/schemas/ProductCategoryResponseDto'
+                code:
+                    description: Code of the product magalu
+                    example: "204434800"
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                description:
+                    description: Description of the product
+                    example: Cafeteira Elétrica Britânia CP30 Preta
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                discount:
+                    description: Product unit discount
+                    example: "10.0"
+                    minLength: 1
+                    type: string
+                freight:
+                    $ref: '#/components/schemas/ProductFreightResponseDto'
+                image_url:
+                    description: Image Url of the product
+                    example: https://a-static.mlcdn.com.br/{w}x{h}/cafeteira-eletrica-britania-cp30-preta-30-xicaras/magazineluiza/204434800/0e39912e6dce7e3935561f857edf14c4.jpg
+                    maxLength: 512
+                    minLength: 1
+                    type: string
+                interest:
+                    description: Product unit interest
+                    example: "2.0"
+                    minLength: 1
+                    type: string
+                price:
+                    description: Product unit price
+                    example: "25.0"
+                    minLength: 1
+                    type: string
+                reference:
+                    description: Reference of the product
+                    example: 30 Xícaras
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                seller:
+                    $ref: '#/components/schemas/ProductSellerResponseDto'
+                total:
+                    description: Total unit product value with freight (Product + Interest + Freight - Discount)
+                    example: "32.0"
+                    minLength: 1
+                    type: string
+                value:
+                    description: Total unit product value without freight (Product + Interest - Discount)
+                    example: "17.0"
+                    minLength: 1
+                    type: string
+            required:
+                - code
+                - discount
+                - freight
+                - interest
+                - price
+                - total
+                - value
+            type: object
+        ProductSeller:
+            description: The product seller
+            properties:
+                sku:
+                    description: The seller sku
+                    type: string
+            type: object
+        ProductSellerResponseDto:
+            properties:
+                sku:
+                    description: Code of the product seller
+                    example: sdk1234
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+            required:
+                - sku
+            type: object
+        ProductServiceResponseDto:
+            properties:
+                code:
+                    description: Code of the product magalu
+                    example: "204434800"
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                description:
+                    description: Description of the product
+                    example: Cafeteira Elétrica Britânia CP30 Preta
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                price:
+                    description: Product unit price
+                    example: "25.0"
+                    minLength: 1
+                    type: string
+            required:
+                - code
+                - price
+            type: object
+        ProductSubCategoryResponseDto:
+            properties:
+                id:
+                    description: Sub Category of the product
+                    example: CEAC
+                    maxLength: 32
+                    minLength: 1
+                    type: string
+            required:
+                - id
+            type: object
+        Rating:
+            properties:
+                comment:
+                    description: any additional comments
+                    type: string
+                csat:
+                    description: customer satisfaction rating from 1 (very unsatisfied) to 5 (very satisfied)
+                    format: int32
+                    maximum: 5
+                    minimum: 1
+                    type: integer
+            required:
+                - comment
+                - csat
+            type: object
+        RecipientResponseDto:
+            properties:
+                address:
+                    $ref: '#/components/schemas/AddressResponseDto'
+                cnpj:
+                    description: Cnpj of the customer recipient
+                    example: "12345678910124"
+                    maxLength: 14
+                    type: string
+                cpf:
+                    description: Cpf of the customer recipient
+                    example: "12345678910"
+                    maxLength: 11
+                    type: string
+                name:
+                    description: Name of the customer recipient
+                    example: Joe User
+                    maxLength: 100
+                    type: string
+                uuid:
+                    description: Identifier of the customer recipient
+                    example: de0c19f6-c1c5-4f4c-85a4-c97dd43d341c
+                    format: uuid
+                    type: string
+            required:
+                - address
+                - name
+                - uuid
+            type: object
+        SalesChannelResponseDto:
+            properties:
+                code:
+                    description: Identifier of the sale channel
+                    example: 53
+                    format: int32
+                    minimum: 1
+                    type: integer
+                description:
+                    description: Description of the sale channel
+                    example: ML-APP Android
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                organization:
+                    $ref: '#/components/schemas/OrganizationResponseDto'
+            required:
+                - code
+                - description
+                - organization
+            type: object
+        Seller:
+            description: The package seller
+            properties:
+                code:
+                    description: The seller code
+                    type: string
+                description:
+                    description: The seller description
+                    type: string
+            type: object
+        SellerResponseDto:
+            properties:
+                code:
+                    description: Code of the seller
+                    example: seller-abcd
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                description:
+                    description: Description of the seller
+                    example: Seller ABCD
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+            required:
+                - code
+                - description
+            type: object
+        ServiceResponseDto:
+            description: Products services only visible for customers
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                product:
+                    $ref: '#/components/schemas/ProductServiceResponseDto'
+                quantity:
+                    description: Quantity of an service item in the package
+                    example: 2
+                    format: int32
+                    minimum: 1
+                    type: integer
+                slug:
+                    description: 'Name short service '
+                    example: GE
+                    maxLength: 32
+                    minLength: 1
+                    type: string
+                total:
+                    description: Total value of the service (Product Price * Quantity)
+                    example: "100.0"
+                    minLength: 1
+                    type: string
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of a service item in the package
+                    example: 8caa3d05-d801-4021-a1d9-b94d5306b091
+                    format: uuid
+                    type: string
+                validity:
+                    $ref: '#/components/schemas/ValidityResponseDto'
+            required:
+                - created_at
+                - product
+                - quantity
+                - slug
+                - total
+                - updated_at
+                - uuid
+                - validity
+            type: object
+        ShipmentModalityResponseDto:
+            properties:
+                description:
+                    description: Description of the delivery Modality
+                    example: Convencional
+                    maxLength: 32
+                    type: string
+                type:
+                    description: Type of the delivery Modality
+                    enum:
+                        - conventional
+                        - store_pickup
+                        - scheduled
+                    example: conventional
+                    maxLength: 32
+                    type: string
+            required:
+                - description
+                - type
+            type: object
+        ShipmentRequestDto:
+            properties:
+                tracking:
+                    $ref: '#/components/schemas/TrackingRequestDto'
+            required:
+                - tracking
+            type: object
+        ShipmentResponseDto:
+            properties:
+                cost:
+                    description: Freight cost paid by the customer for a Package
+                    example: "30.0"
+                    minLength: 1
+                    type: string
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                deadline:
+                    $ref: '#/components/schemas/DeadlineResponseDto'
+                modality:
+                    $ref: '#/components/schemas/ShipmentModalityResponseDto'
+                pickup:
+                    $ref: '#/components/schemas/PickupResponseDto'
+                recipient:
+                    $ref: '#/components/schemas/RecipientResponseDto'
+                service:
+                    $ref: '#/components/schemas/ShipmentServiceResponseDto'
+                tracking:
+                    $ref: '#/components/schemas/TrackingResponseDto'
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                uuid:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+            required:
+                - cost
+                - created_at
+                - deadline
+                - modality
+                - recipient
+                - updated_at
+                - uuid
+            type: object
+        ShipmentServiceResponseDto:
+            properties:
+                id:
+                    description: Identifier of the delivery Service
+                    example: 1
+                    format: int32
+                    minimum: 1
+                    type: integer
+                name:
+                    description: Description of the delivery Service
+                    example: courrier
+                    maxLength: 36
+                    minLength: 1
+                    type: string
+            required:
+                - id
+                - name
+            type: object
+        StatusCustomerResponseDto:
+            description: Status Customer Only visible for sellers
+            properties:
+                description:
+                    description: Recebemos seu Pedido
+                    example: "true"
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                visible:
+                    description: Visible status for customer
+                    example: true
+                    type: boolean
+            required:
+                - description
+                - visible
+            type: object
+        StoreResponseDto:
+            properties:
+                address:
+                    $ref: '#/components/schemas/AddressResponseDto'
+                code:
+                    description: Code of the Store
+                    example: "1"
+                    type: string
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+                localization:
+                    $ref: '#/components/schemas/LocalizationResponseDto'
+                opening_hours:
+                    items:
+                        $ref: '#/components/schemas/OpeningHourResponseDto'
+                    type: array
+                phones:
+                    items:
+                        $ref: '#/components/schemas/PhoneResponseDto'
+                    type: array
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-05-26T15:36:19Z
+                    format: date-time
+                    type: string
+            required:
+                - code
+                - created_at
+                - updated_at
+            type: object
+        TechnicalDetailsResponseDto:
+            properties:
+                height_unit:
+                    maxLength: 4
+                    minLength: 1
+                    type: string
+                height_value:
+                    exclusiveMinimum: true
+                    minLength: 1
+                    type: string
+                length_unit:
+                    maxLength: 4
+                    minLength: 1
+                    type: string
+                length_value:
+                    exclusiveMinimum: true
+                    minLength: 1
+                    type: string
+                weight_unit:
+                    maxLength: 4
+                    minLength: 1
+                    type: string
+                weight_value:
+                    exclusiveMinimum: true
+                    minLength: 1
+                    type: string
+                width_unit:
+                    maxLength: 4
+                    minLength: 1
+                    type: string
+                width_value:
+                    exclusiveMinimum: true
+                    minLength: 1
+                    type: string
+            required:
+                - height_unit
+                - height_value
+                - length_unit
+                - length_value
+                - weight_unit
+                - weight_value
+                - width_unit
+                - width_value
+            type: object
+        Ticket:
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                created_by:
+                    description: The user who created the ticket
+                    type: string
+                customer:
+                    $ref: '#/components/schemas/Customer'
+                due_date:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                order:
+                    $ref: '#/components/schemas/Order'
+                origin:
+                    description: The ticket origin
+                    type: string
+                protocol:
+                    description: The protocol number
+                    format: int64
+                    type: integer
+                status:
+                    $ref: '#/components/schemas/TicketStatus'
+                type:
+                    $ref: '#/components/schemas/TicketType'
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                uuid:
+                    description: The ticket UUID
+                    format: uuid
+                    type: string
+            required:
+                - created_at
+                - due_date
+                - updated_at
+            type: object
+        TicketRequest:
+            properties:
+                bank_account:
+                    $ref: '#/components/schemas/Bank account'
+                cancellation_reason:
+                    description: The reason to cancellation ticket
+                    enum:
+                        - nao-preciso
+                        - preco-melhor
+                        - nao-recebi
+                        - produto-avariado
+                        - produto-diferente
+                        - faltam-pecas
+                        - comprei-errado
+                    maxLength: 30
+                    type: string
+                items:
+                    items:
+                        $ref: '#/components/schemas/ItemRequest'
+                    type: array
+                message:
+                    description: The message is required for customers
+                    maxLength: 255
+                    type: string
+                order_uuid:
+                    description: The order identification
+                    format: uuid
+                    type: string
+                package_uuid:
+                    description: The order package identification
+                    format: uuid
+                    type: string
+                type_code:
+                    description: The ticket type code
+                    enum:
+                        - mktplace-duvidas-gerais
+                        - mktplace-reclamacao
+                        - mktplace-pagamento
+                        - mktplace-produto
+                        - mktplace-entrega
+                        - mktplace-cancelamento-de-pedido
+                    type: string
+            required:
+                - items
+                - order_uuid
+                - package_uuid
+                - type_code
+            type: object
+        TicketStatus:
+            description: The ticket public status
+            properties:
+                code:
+                    description: The status code
+                    type: string
+                description:
+                    description: The status description
+                    type: string
+            required:
+                - description
+            type: object
+        TicketType:
+            description: The ticket type
+            properties:
+                code:
+                    description: The ticket type code
+                    type: string
+                description:
+                    description: The ticket type description
+                    type: string
+            required:
+                - code
+                - description
+            type: object
+        TrackingRequestDto:
+            properties:
+                code:
+                    description: Code of the tracking
+                    example: OI273447BR
+                    maxLength: 50
+                    minLength: 1
+                    type: string
+                url:
+                    description: Url of the tracking
+                    example: http://sro.luizalabs.com/tracking?id=OI273447BR
+                    maxLength: 255
+                    minLength: 0
+                    type: string
+            type: object
+        TrackingResponseDto:
+            properties:
+                code:
+                    description: Code of the tracking
+                    example: OI273447BR
+                    maxLength: 50
+                    type: string
+                url:
+                    description: Url of the tracking
+                    example: http://sro.luizalabs.com/tracking?id=OI273447BR
+                    maxLength: 255
+                    type: string
+            type: object
+        ValidityResponseDto:
+            properties:
+                type:
+                    description: Type of the Validity
+                    example: month
+                    maxLength: 32
+                    minLength: 1
+                    type: string
+                value:
+                    description: Value of the Validity
+                    example: 12
+                    format: int32
+                    maximum: 999
+                    minimum: 1
+                    type: integer
+            required:
+                - type
+                - value
+            type: object
+        VolumeResponseDto:
+            properties:
+                created_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                current:
+                    format: int32
+                    maxLength: 2
+                    minLength: 1
+                    type: integer
+                tag:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                technical_details:
+                    $ref: '#/components/schemas/TechnicalDetailsResponseDto'
+                total_volumes:
+                    format: int32
+                    maxLength: 2
+                    minLength: 1
+                    type: integer
+                updated_at:
+                    description: We expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    format: date-time
+                    type: string
+                url:
+                    maxLength: 255
+                    type: string
+                uuid:
+                    description: Identifier of a volume in the shipping
+                    example: 8caa3d05-d801-4021-a1d9-b94d5306b091
+                    format: uuid
+                    type: string
+            required:
+                - created_at
+                - current
+                - tag
+                - technical_details
+                - total_volumes
+                - updated_at
+            type: object
+paths:
+    /v1/orders:
+        get:
+            operationId: getOrders
+            parameters:
+                - in: query
+                  name: number
+                  schema:
+                    description: order number at checkout
+                    example: "8954650874610585"
+                    maxLength: 255
+                    minLength: 3
+                    type: string
+                - in: query
+                  name: _limit
+                  schema:
+                    default: 10
+                    description: Limit of records that will be returned
+                    example: 1
+                    exclusiveMaximum: true
+                    exclusiveMinimum: true
+                    format: int32
+                    maximum: 50
+                    minimum: 1
+                    type: integer
+                - in: query
+                  name: _offset
+                  schema:
+                    default: 0
+                    description: Starting this page will be returned records
+                    example: 0
+                    format: int32
+                    type: integer
+                - in: query
+                  name: _sort
+                  schema:
+                    default: -created_at
+                    description: Ordering of records
+                    enum:
+                        - -created_at
+                        - +created_at
+                    example: -created_at
+                    type: string
+                - in: query
+                  name: created_at
+                  schema:
+                    description: Datetime when the order was created, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC. If not informed, it will default to today minus three months
+                    example: 2021-01-01T15:36:19Z
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_gt
+                  schema:
+                    description: Datetime greater than the order creation, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-01-01T15:36:19Z
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_gte
+                  schema:
+                    description: Datetime greater than or equals the order creation, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-01-01T15:36:19Z
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_lt
+                  schema:
+                    description: Datetime lesser than the order creation, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-03-01T09:22:12Z
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_lte
+                  schema:
+                    description: Datetime lesser than or equals the order creation, we expect date in ISO 8601 format of YYYY-MM-DDThh:mm:ss.SSSZ in UTC
+                    example: 2021-03-01T09:22:12Z
+                    format: date-time
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/OrderResponseDto'
+                                type: array
+                    description: Orders list
+                    headers:
+                        _content-range:
+                            description: Total elements in array
+                            required: true
+                            style: simple
+                        _limit:
+                            description: Query parameter sent on request
+                            style: simple
+                        _offset:
+                            description: Query parameter sent on request
+                            style: simple
+                        _sort:
+                            description: Query parameter sent on request
+                            style: simple
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Records not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get order by number, created_at or paged orders
+    /v1/orders/{order_uuid}:
+        get:
+            operationId: getOrderByUuid
+            parameters:
+                - in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OrderResponseDto'
+                    description: Order entity
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get order by uuid
+    /v1/orders/{order_uuid}/packages/{package_uuid}:
+        get:
+            operationId: getOrderPackageByOrderUuidAndPackageUuid
+            parameters:
+                - in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+                - in: path
+                  name: package_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the package
+                    example: 722254a4-ed0e-4e1d-9aa2-92c1bb57ff9d
+                    format: uuid
+                    type: string
+            responses:
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+                default:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/OrderResponseDto'
+                                type: array
+                    description: The package
+            summary: Get package by order_uuid and package_uuid
+    /v1/orders/{order_uuid}/packages/{package_uuid}/events:
+        get:
+            operationId: getEventsByPackageUuid
+            parameters:
+                - in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+                - in: path
+                  name: package_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the package
+                    example: a6dce737-fe37-4444-8c51-a021d10051b7
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/EventResponseDto'
+                                type: array
+                    description: Events list
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get events by param order_uuid and package_uuid
+    /v1/orders/{order_uuid}/packages/{package_uuid}/invoices:
+        get:
+            operationId: getInvoicesByOrderAndPackageUuid
+            parameters:
+                - in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+                - in: path
+                  name: package_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the package
+                    example: a6dce737-fe37-4444-8c51-a021d10051b7
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/InvoiceResponseDto'
+                                type: array
+                    description: Invoices list
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get invoices by param order_uuid and package_uuid
+    /v1/orders/{order_uuid}/packages/{package_uuid}/items:
+        get:
+            operationId: getOrderByOrderIdPackageUuid
+            parameters:
+                - in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+                - in: path
+                  name: package_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the package
+                    example: a6dce737-fe37-4444-8c51-a021d10051b7
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ItemResponseDto'
+                                type: array
+                    description: Items list
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get package items by param order_uuid and package_uuid
+    /v1/orders/{order_uuid}/packages/{package_uuid}/shipment:
+        get:
+            operationId: getShipmentByPackageUuid
+            parameters:
+                - in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+                - in: path
+                  name: package_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the package
+                    example: a6dce737-fe37-4444-8c51-a021d10051b7
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ShipmentResponseDto'
+                    description: Shipment entity
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get shipment by param order_uuid and package_uuid
+    /v1/orders/{order_uuid}/packages/{package_uuid}/shipment/{shipment_uuid}/volumes:
+        get:
+            operationId: getVolumes
+            parameters:
+                - in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    format: uuid
+                    type: string
+                - in: path
+                  name: package_uuid
+                  required: true
+                  schema:
+                    format: uuid
+                    type: string
+                - in: path
+                  name: shipment_uuid
+                  required: true
+                  schema:
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/VolumeResponseDto'
+                                type: array
+                    description: Volumes list
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get volumes by param order_uuid, package_uuid and shipment_uuid
+    /v1/orders/{order_uuid}/packages/{package_uuid}/tickets:
+        get:
+            operationId: findTickets
+            parameters:
+                - description: Order uuid
+                  in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    type: string
+                - description: Package uuid
+                  in: path
+                  name: package_uuid
+                  required: true
+                  schema:
+                    type: string
+                - in: query
+                  name: _offset
+                  required: false
+                  schema:
+                    description: Position of the reference record, from which the next N records will be returned
+                    format: int32
+                    minimum: 0
+                    type: integer
+                - in: query
+                  name: _limit
+                  required: false
+                  schema:
+                    description: The size of request per page
+                    format: int32
+                    maximum: 50
+                    minimum: 1
+                    type: integer
+                - in: query
+                  name: _sort
+                  required: false
+                  schema:
+                    description: The request sorting
+                    example: +domainAttribute1,-domainAttribute2
+                    items:
+                        description: The request sorting
+                        example: +domainAttribute1,-domainAttribute2
+                        type: string
+                    type: array
+                - in: query
+                  name: protocol
+                  required: false
+                  schema:
+                    description: the protocol number
+                    items:
+                        description: the protocol number
+                        type: string
+                    type: array
+                - in: query
+                  name: status_code
+                  required: false
+                  schema:
+                    description: the ticket status code
+                    type: string
+                - in: query
+                  name: type_code
+                  required: false
+                  schema:
+                    description: the ticket type code
+                    type: string
+                - in: query
+                  name: cpf
+                  required: false
+                  schema:
+                    description: the customer document
+                    type: string
+                - in: query
+                  name: cnpj
+                  required: false
+                  schema:
+                    description: the customer document
+                    type: string
+                - in: query
+                  name: due_date
+                  required: false
+                  schema:
+                    default: all
+                    description: the ticket public due date expiration
+                    enum:
+                        - all
+                        - expired
+                        - not_expired
+                    type: string
+                - in: query
+                  name: created_at_gt
+                  required: false
+                  schema:
+                    description: Created date greater than
+                    example: "2021-05-26T15:36:19Z"
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_gte
+                  required: false
+                  schema:
+                    description: Created date greater than or equals to
+                    example: "2021-05-26T15:36:19Z"
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_lt
+                  required: false
+                  schema:
+                    description: Created date less than
+                    example: "2021-05-26T15:36:19Z"
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_lte
+                  required: false
+                  schema:
+                    description: Created date less than or equals to
+                    example: "2021-05-26T15:36:19Z"
+                    format: date-time
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/Ticket'
+                                type: array
+                    description: Tickets
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Invalid request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Not Authorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Internal server error
+            summary: List tickets by order and package
+    /v1/orders/{order_uuid}/payment:
+        get:
+            operationId: getPaymentByOrderUuid
+            parameters:
+                - in: path
+                  name: order_uuid
+                  required: true
+                  schema:
+                    description: Identifier of the order
+                    example: 13bdb3e3-8fad-4f9b-a6c3-2fa99786289f
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PaymentResponseDto'
+                    description: Payment entity
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get payment by order_uuid
+    /v1/orders/packages/events/status:
+        get:
+            operationId: getAllowedStatus
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/EventStatusResponseDto'
+                                type: array
+                    description: Event Status list
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Bad request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unauthorized
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorDto'
+                                type: array
+                    description: Internal server error
+            summary: Get allowed status
+    /v1/tickets:
+        get:
+            operationId: listMyTickets
+            parameters:
+                - in: query
+                  name: _offset
+                  required: false
+                  schema:
+                    description: Position of the reference record, from which the next N records will be returned
+                    format: int32
+                    minimum: 0
+                    type: integer
+                - in: query
+                  name: _limit
+                  required: false
+                  schema:
+                    description: The size of request per page
+                    format: int32
+                    maximum: 50
+                    minimum: 1
+                    type: integer
+                - in: query
+                  name: _sort
+                  required: false
+                  schema:
+                    description: The request sorting
+                    example: +domainAttribute1,-domainAttribute2
+                    items:
+                        description: The request sorting
+                        example: +domainAttribute1,-domainAttribute2
+                        type: string
+                    type: array
+                - in: query
+                  name: protocol
+                  required: false
+                  schema:
+                    description: the protocol number
+                    items:
+                        description: the protocol number
+                        type: string
+                    type: array
+                - in: query
+                  name: status_code
+                  required: false
+                  schema:
+                    description: the ticket status code
+                    type: string
+                - in: query
+                  name: type_code
+                  required: false
+                  schema:
+                    description: the ticket type code
+                    type: string
+                - in: query
+                  name: cpf
+                  required: false
+                  schema:
+                    description: the customer document
+                    type: string
+                - in: query
+                  name: cnpj
+                  required: false
+                  schema:
+                    description: the customer document
+                    type: string
+                - in: query
+                  name: due_date
+                  required: false
+                  schema:
+                    default: all
+                    description: the ticket public due date expiration
+                    enum:
+                        - all
+                        - expired
+                        - not_expired
+                    type: string
+                - in: query
+                  name: created_at_gt
+                  required: false
+                  schema:
+                    description: Created date greater than
+                    example: "2021-05-26T15:36:19Z"
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_gte
+                  required: false
+                  schema:
+                    description: Created date greater than or equals to
+                    example: "2021-05-26T15:36:19Z"
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_lt
+                  required: false
+                  schema:
+                    description: Created date less than
+                    example: "2021-05-26T15:36:19Z"
+                    format: date-time
+                    type: string
+                - in: query
+                  name: created_at_lte
+                  required: false
+                  schema:
+                    description: Created date less than or equals to
+                    example: "2021-05-26T15:36:19Z"
+                    format: date-time
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/Ticket'
+                                type: array
+                    description: Tickets
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Invalid request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Not Authorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Internal server error
+            summary: List tickets
+        post:
+            operationId: createTicket
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TicketRequest'
+                required: true
+            responses:
+                "201":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Ticket'
+                    description: Ticket
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Invalid request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Not Authorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Unprocessable entity
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Internal server error
+            summary: Create ticket
+    /v1/tickets/{ticket_uuid}:
+        get:
+            operationId: findTicketByUuid
+            parameters:
+                - in: path
+                  name: ticket_uuid
+                  required: true
+                  schema:
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/Ticket'
+                                type: array
+                    description: Tickets
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Invalid request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Not Authorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Entity not found
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Internal server error
+            summary: Get ticket by UUID
+    /v1/tickets/{ticket_uuid}/close:
+        post:
+            operationId: closeTicket
+            parameters:
+                - in: path
+                  name: ticket_uuid
+                  required: true
+                  schema:
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Ticket'
+                    description: Ticket
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Invalid request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Not Authorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Entity not found
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Internal server error
+            summary: Close ticket
+    /v1/tickets/{ticket_uuid}/messages:
+        get:
+            operationId: listMyMessages
+            parameters:
+                - in: path
+                  name: ticket_uuid
+                  required: true
+                  schema:
+                    format: uuid
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/MessageResponse'
+                                type: array
+                    description: Messages
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Invalid request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Not Authorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Entity not found
+            summary: List messages by ticket UUID
+        post:
+            operationId: saveMessage
+            parameters:
+                - in: path
+                  name: ticket_uuid
+                  required: true
+                  schema:
+                    format: uuid
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MessageRequest'
+                required: true
+            responses:
+                "201":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/MessageResponse'
+                                type: array
+                    description: Messages
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Invalid request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Not Authorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Entity not found
+                "422":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Unprocessable entity
+            summary: Save ticket message
+    /v1/tickets/{ticket_uuid}/rating:
+        post:
+            operationId: ratingTicket
+            parameters:
+                - in: path
+                  name: ticket_uuid
+                  required: true
+                  schema:
+                    format: uuid
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Rating'
+                required: true
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Ticket'
+                    description: Ticket
+                "400":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Invalid request
+                "401":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Not Authorized
+                "403":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Forbidden
+                "404":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Entity not found
+                "500":
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponseJson'
+                                type: array
+                    description: Internal server error
+            summary: Rate ticket
+openapi: 3.0.2
+
