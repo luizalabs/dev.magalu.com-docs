@@ -31,6 +31,8 @@ jobs:
 
           git config --global user.name ${USER_GITLAB}
           git config --global user.email ${EMAIL_GITLAB}
+          
+          git checkout production
 
           git tag -a "${tag_name}$((${version} + 1))" -m "${GITHUB_ACTOR} - ${commit_message}"
           git push -u origin ${tag_name}$(($version + 1))
