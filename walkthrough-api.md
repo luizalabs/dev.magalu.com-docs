@@ -513,85 +513,88 @@ Para cadastrar um novo SKU, utilizamos também o endpoint `/adelpha/v1/skus`, on
 curl -X POST https://alpha.api.magalu.com/adelpha/v1/skus\
   -H "X-API-Key: ${MYAPIKEY}" -H "X-Tenant-ID: 21fea73c-e244-497a-8540-be0d3c583596" \
   -H "accept: application/json" -H "content-type: application/json" \
-  -d
+  -d "$PAYLOAD"
 ```
-
 <details>
-    <summary><strong>Resposta JSON:</strong></summary>
+    <summary><strong>Payload JSON:</strong></summary>
 
 ```json
-{
-    "sku": "012345678",
-    "stocks": [{
-    "quantity": 1234,
-    "branch": "ULA01",
-    "name": "Estoque X",
-    "type": "on_seller",
-    "reserved": 0,
-    "delivery_time": 144000
-  }],
-  "channels": [{
-    "name": "SuperApp",
-    "active": true,
-    "price": {
-    "value": 1234.99,
-    "list_price": 1300
+PAYLOAD='{
+  "sku": "012345678",
+  "stocks": [
+    {
+      "quantity": 1234,
+      "branch": "ULA01",
+      "name": "Estoque X",
+      "type": "on_seller",
+      "reserved": 0,
+      "delivery_time": 144000
     }
-  }],
+  ],
+  "channels": [
+    {
+      "name": "magazineluiza",
+      "active": true,
+      "price": {
+        "value": "1234.99",
+        "list_price": "1300"
+      }
+    }
+  ],
   "product": {
     "group_id": "5f6e2b8a9f91f47840b9bf49",
     "identifier": [
-        {
+      {
         "type": "ean",
         "value": "841667100531"
-        },
-        {
+      },
+      {
         "type": "isbn",
         "value": "9788562063602"
-        },
-        {
+      },
+      {
         "type": "ncm",
         "value": "8517.61.30"
-        }
+      }
     ],
     "title": "Tablet Wi-Fi 4GB Tela 6",
     "description": "Feito para os amantes da leitura com sua tela de 6 polegadas...",
     "origin": "national",
     "perishable": false,
     "package": {
-        "height": 100,
-        "width": 80,
-        "depth": 90,
-        "weight": 150
+      "height": 100,
+      "width": 80,
+      "depth": 90,
+      "weight": 150
     },
     "datasheet": [
-        {
+      {
         "type": "Voltagem",
         "value": "220"
-        },
-        {
+      },
+      {
         "type": "Cor",
         "value": "Branca"
-        }
+      }
     ],
     "tags": [
-        "my-tag-1",
-        "my-tag-2"
+      "my-tag-1",
+      "my-tag-2"
     ],
     "brand": "Samsung",
     "media": {
-        "images": [
+      "images": [
         "https://mysite.domain/some-image.jpg"
-        ],
-        "videos": [
-        "https://youtube/some-video/"
-        ]
+      ],
+      "videos": [
+        "https://youtu.be/some-video/"
+      ]
     },
     "dimensions": {
-        "height": 100,
-        "width": 80,
-        "depth": 90,
-        "weight": 150
+      "height": 100,
+      "width": 80,
+      "depth": 90,
+      "weight": 150
     },
     "attributes": [
       {
@@ -606,7 +609,6 @@ curl -X POST https://alpha.api.magalu.com/adelpha/v1/skus\
   }
 }'
 ```
-
 </details>
 
 Com o campo `channels.active` tendo o valor `true`, entende-se que o pedido criado pode ser listado como uma oferta ativa no canal indicado. Dessa forma, após passar por um período de avaliação de conteúdo, o produto aparecerá no(s) site(s) dos canais informados.
